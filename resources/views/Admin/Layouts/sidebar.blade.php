@@ -1,6 +1,6 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="{{ route('admin.dashboard') }}" class="brand-link">
         <img src="{{ asset('backend/admin/dist/img/common/dashboard-logo.png') }}"
             class="brand-image img-circle elevation-6 bg-white" alt="Best Dream Car Admin dashboard brand logo"
             style="opacity: .8">
@@ -50,7 +50,7 @@
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Dashboard -->
         <li class="nav-item">
-            <a href="#" class="nav-link active">
+            <a href="{{ route('admin.dashboard') }}" class="nav-link active">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>Dashboard</p>
             </a>
@@ -68,13 +68,13 @@
             </a>
             <ul class="nav nav-treeview" style="padding-left: 15px;">
                 <li class="nav-item">
-                    <a href="pages/layout/top-nav.html" class="nav-link">
+                    <a href="{{ route('admin.inventory') }}" class="nav-link">
                         <i class="fas fa-list nav-icon"></i>
                         <p>Inventory List</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+                    <a href="#" class="nav-link">
                         <i class="fas fa-check-circle nav-icon"></i>
                         <p>Active Inventory</p>
                     </a>
@@ -107,31 +107,31 @@
                     </a>
                     <ul class="nav nav-treeview" style="padding-left: 25px;">
                         <li class="nav-item">
-                            <a href="pages/layout/top-nav.html" class="nav-link">
+                            <a href="#" class="nav-link">
                                 <i class="fas fa-newspaper nav-icon"></i>
                                 <p>Auto News</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/layout/top-nav.html" class="nav-link">
+                            <a href="#" class="nav-link">
                                 <i class="fas fa-star nav-icon"></i>
                                 <p>Reviews</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/layout/top-nav.html" class="nav-link">
+                            <a href="#" class="nav-link">
                                 <i class="fas fa-tools nav-icon"></i>
                                 <p>Tools & Advice</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/layout/top-nav.html" class="nav-link">
+                            <a href="#" class="nav-link">
                                 <i class="fas fa-shopping-cart nav-icon"></i>
                                 <p>Car Buying Advice</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/layout/top-nav.html" class="nav-link">
+                            <a href="#" class="nav-link">
                                 <i class="fas fa-lightbulb nav-icon"></i>
                                 <p>Car Tips</p>
                             </a>
@@ -150,25 +150,25 @@
                     </a>
                     <ul class="nav nav-treeview" style="padding-left: 25px;">
                         <li class="nav-item">
-                            <a href="pages/layout/top-nav.html" class="nav-link">
+                            <a href="#" class="nav-link">
                                 <i class="fas fa-bullhorn nav-icon"></i>
                                 <p>News</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/layout/top-nav.html" class="nav-link">
+                            <a href="#" class="nav-link">
                                 <i class="fas fa-atom nav-icon"></i>
                                 <p>Innovation</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/layout/top-nav.html" class="nav-link">
+                            <a href="#" class="nav-link">
                                 <i class="fas fa-comment nav-icon"></i>
                                 <p>Opinion</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/layout/top-nav.html" class="nav-link">
+                            <a href="#" class="nav-link">
                                 <i class="fas fa-chart-line nav-icon"></i>
                                 <p>Financial</p>
                             </a>
@@ -183,10 +183,10 @@
 
         <!-- Blank Page -->
         <li class="nav-item">
-            <a href="pages/calendar.html" class="nav-link">
+            <a href="{{ route('admin.blank') }}" class="nav-link">
                 <i class="nav-icon far fa-file-alt"></i>
                 <p>
-                    Blank Page
+                    Blank
                     <span class="badge badge-info right">2</span>
                 </p>
             </a>

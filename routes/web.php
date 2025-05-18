@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\InventoryController;
 
 Route::get('/', function () {
     return view('Auth.login');
@@ -22,4 +23,6 @@ Route::get('admin/dashboard',[DashboardController::class,'index'])->name('admin.
 // Route::get('admin/change-password',[ChangePasswordController::class,'index'])->name('admin.change.password');
 // Route::post('admin/change-password',[ChangePasswordController::class,'update'])->name('admin.change.password.update');
 
+Route::get('admin/blank',[DashboardController::class,'blank'])->name('admin.blank');
+Route::get('admin/inventories',[InventoryController::class,'index'])->name('admin.inventory');
 

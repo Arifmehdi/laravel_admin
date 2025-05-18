@@ -25,6 +25,14 @@
     <link rel="stylesheet" href="{{ asset('backend/admin') }}/plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
     <link rel="stylesheet" href="{{ asset('backend/admin') }}/plugins/summernote/summernote-bs4.min.css">
+
+    <!-- sweeyalert -->
+    <link href=" https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css " rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+
+        <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-1.13.6/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/datatables.min.css"/>
+
     <script data-cfasync="false" nonce="989cffc6-d846-48ce-a887-b695fe913fea">
         try {
             (function(w, d) {

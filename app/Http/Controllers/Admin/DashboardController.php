@@ -21,4 +21,9 @@ class DashboardController extends Controller
         ]);
         return view('Admin.dashboard', $data);
     }
+
+    public function blank()
+    {
+        return view('Admin.blank');
+    }
 }

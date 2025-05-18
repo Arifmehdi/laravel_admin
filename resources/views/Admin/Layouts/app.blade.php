@@ -48,6 +48,7 @@
     </div>
     <!-- ./wrapper -->
     @include('Admin.Layouts.footer')
+    @stack('scripts')
 </body>
 
 </html>
