@@ -29,7 +29,7 @@
                         <div class="inner">
                             <h3>{{$inventory}}</h3>
 
-                            <p>Incentories</p>
+                            <p>Inventories</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-stats-bars"></i>
