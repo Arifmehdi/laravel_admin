@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\MainInventory;
-use DataTables;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
+
 
 class InventoryController extends Controller
 {
@@ -38,12 +39,23 @@ class InventoryController extends Controller
                 );
             return DataTables::of($data)
                 ->addIndexColumn()
-                // ->addColumn()
+                ->addColumn('DT_RowIndex', function ($row) {
+                    return $row->id; // Use any unique identifier for your rows
+                })
+                ->addColumn('is_visibility', function($row) {
+                    // Check if the row is visible (active)
+                    if ($row->is_visibility) {
+                        $btn = '<span class="badge bg-success">Active</span>';
+                    } else {
+                        $btn = '<span class="badge bg-danger">Inactive</span>';
+                    }
+                    return $btn;
+                })
                 ->addColumn('action', function($row){
                     $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
                     return $btn;
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['action','is_visibility'])
                 ->make(true);
         }
        return view('Admin.inventories');

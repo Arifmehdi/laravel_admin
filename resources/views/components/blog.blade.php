@@ -5,12 +5,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Inventories</h1>
+            <h1>Auto News</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Inventories</li>
+              <li class="breadcrumb-item active">Auto News</li>
             </ol>
           </div>
         </div>
@@ -24,7 +24,7 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Inventory List</h3>
+                <h3 class="card-title">{{$type}} List</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -32,20 +32,10 @@
                         <thead>
                             <tr>
                                 <th>SL</th>
-                                <th>Stock</th>
-                                <th>VIN</th>
-                                <th>Year</th>
-                                <th>Make</th>
-                                <th>Model</th>
-                                <th>Dealer</th>
-                                <th>City</th>
-                                <th>State</th>
-                                <th>Listing Date</th>
-                                <th>Active Start</th>
-                                <th>Active End</th>
-                                <th>Paid</th>
+                                <th>Image</th>
+                                <th>Title</th>
+                                <th>Create Date</th>
                                 <th>Status</th>
-                                <th>Visibility</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -54,9 +44,6 @@
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
-
-
-
           </div>
           <!-- /.col -->
         </div>
@@ -72,23 +59,13 @@ $(function() {
     $('#data-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{{ route('admin.inventory') }}',
+        ajax: '{{ route('$route') }}',
         columns: [
-            { data: 'DT_RowIndex', name: 'main_inventories.id'  },  // Specify table.column
-            { data: 'stock', name: 'main_inventories.stock' },
-            { data: 'vin', name: 'main_inventories.vin' },
-            { data: 'year', name: 'main_inventories.year' },
-            { data: 'make', name: 'main_inventories.make' },
-            { data: 'model', name: 'main_inventories.model' },
-            { data: 'admin_name', name: 'admins.name' },  // Use renamed column
-            { data: 'admin_city', name: 'admins.city' },
-            { data: 'admin_state', name: 'admins.state' },
-            { data: 'created_date', name: 'main_inventories.created_date' },
-            { data: 'created_at', name: 'main_inventories.created_at' },
-            { data: 'active_till', name: 'main_inventories.active_till' },
-            { data: 'package', name: 'main_inventories.package' },
-            { data: 'inventory_status', name: 'main_inventories.inventory_status' },
-            { data: 'is_visibility', name: 'main_inventories.is_visibility' },
+            { data: 'DT_RowIndex', name: 'blogs.id'  },  // Specify table.column
+            { data: 'img', name: 'blogs.img' },
+            { data: 'title', name: 'blogs.title' },
+            { data: 'created_at', name: 'blogs.created_at' },
+            { data: 'status', name: 'blogs.status' },
             { data: 'action', name: 'action', orderable: false, searchable: false }
         ],
         dom: 'Bfrtip',

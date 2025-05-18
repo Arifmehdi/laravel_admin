@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InventoryController;
 
@@ -25,4 +26,14 @@ Route::get('admin/dashboard',[DashboardController::class,'index'])->name('admin.
 
 Route::get('admin/blank',[DashboardController::class,'blank'])->name('admin.blank');
 Route::get('admin/inventories',[InventoryController::class,'index'])->name('admin.inventory');
+Route::get('admin/auto-news',[BlogController::class,'autoNews'])->name('admin.autoNews');
+Route::get('admin/reviews',[BlogController::class,'reviews'])->name('admin.reviews');
+Route::get('admin/tools-and-advice',[BlogController::class,'toolsAndAdvice'])->name('admin.toolsAndAdvice');
+Route::get('admin/car-buying-advice',[BlogController::class,'carBuyingAdvice'])->name('admin.carBuyingAdvice');
+Route::get('admin/car-tips',[BlogController::class,'carTips'])->name('admin.carTips');
+
+Route::get('admin/news',[BlogController::class,'news'])->name('admin.news');
+Route::get('admin/innovation',[BlogController::class,'innovation'])->name('admin.innovation');
+Route::get('admin/opinion',[BlogController::class,'opinion'])->name('admin.opinion');
+Route::get('admin/financial',[BlogController::class,'financial'])->name('admin.financial');
 
