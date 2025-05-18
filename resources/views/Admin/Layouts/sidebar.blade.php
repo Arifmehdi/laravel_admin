@@ -203,11 +203,18 @@
 
                 <!-- Blank Page -->
                 <li class="nav-item">
-                    <a href="{{ route('admin.blank') }}" class="nav-link">
+                    <a href="{{ route('admin.blank') }}" class="nav-link  {{ in_array(Route::currentRouteName(), ['admin.blank']) ? 'active' : '' }}">
                         <i class="nav-icon far fa-file-alt"></i>
                         <p>
                             Blank
-                            <span class="badge badge-info right">2</span>
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.banner') }}" class="nav-link {{ in_array(Route::currentRouteName(), ['admin.banner']) ? 'active' : '' }}">
+                        <i class="nav-icon far fa-file-alt"></i>
+                        <p>
+                            Banner
                         </p>
                     </a>
                 </li>

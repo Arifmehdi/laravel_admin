@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BannerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -36,4 +37,6 @@ Route::get('admin/news',[BlogController::class,'news'])->name('admin.news');
 Route::get('admin/innovation',[BlogController::class,'innovation'])->name('admin.innovation');
 Route::get('admin/opinion',[BlogController::class,'opinion'])->name('admin.opinion');
 Route::get('admin/financial',[BlogController::class,'financial'])->name('admin.financial');
+
+Route::get('admin/banner',[BannerController::class,'index'])->name('admin.banner');
 
