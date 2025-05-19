@@ -40,6 +40,8 @@ Route::prefix('admin')->as('admin.')->group(function () {
 
         Route::get('blank', [DashboardController::class, 'blank'])->name('blank');
         Route::get('inventories', [InventoryController::class, 'index'])->name('inventory');
+
+        Route::post('blog/store', [BlogController::class, 'store'])->name('blog.store');
         Route::get('auto-news', [BlogController::class, 'autoNews'])->name('autoNews');
         Route::get('reviews', [BlogController::class, 'reviews'])->name('reviews');
         Route::get('tools-and-advice', [BlogController::class, 'toolsAndAdvice'])->name('toolsAndAdvice');

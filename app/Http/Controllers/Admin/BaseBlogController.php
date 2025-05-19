@@ -46,9 +46,14 @@ class BaseBlogController extends Controller
                 ->make(true);
         }
 
+        $categories = DB::table('blog_categories')->select('id', 'name', 'slug', 'status', 'img')->get();
+        $sub_categories = DB::table('blog_sub_categories')->select('id', 'name', 'slug', 'status', 'img')->get();
+
         return view($viewName, [
             'type' => $title,
-            'route' => 'admin.' . $routeName
+            'route' => 'admin.' . $routeName,
+            'categories' => $categories,
+            'sub_categories' => $sub_categories
         ]);
     }
 }
