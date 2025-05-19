@@ -28,7 +28,13 @@
                     </noscript> --}}
             </div>
             <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+                <a href="#" class="d-block">
+                    @auth('admin')
+                        {{ Auth::guard('admin')->user()->name }}
+                    @else
+                        Guest User
+                    @endauth
+                </a>
             </div>
         </div>
 
@@ -203,7 +209,8 @@
 
                 <!-- Blank Page -->
                 <li class="nav-item">
-                    <a href="{{ route('admin.blank') }}" class="nav-link  {{ in_array(Route::currentRouteName(), ['admin.blank']) ? 'active' : '' }}">
+                    <a href="{{ route('admin.blank') }}"
+                        class="nav-link  {{ in_array(Route::currentRouteName(), ['admin.blank']) ? 'active' : '' }}">
                         <i class="nav-icon far fa-file-alt"></i>
                         <p>
                             Blank
@@ -211,7 +218,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('admin.banner') }}" class="nav-link {{ in_array(Route::currentRouteName(), ['admin.banner']) ? 'active' : '' }}">
+                    <a href="{{ route('admin.banner') }}"
+                        class="nav-link {{ in_array(Route::currentRouteName(), ['admin.banner']) ? 'active' : '' }}">
                         <i class="nav-icon far fa-file-alt"></i>
                         <p>
                             Banner

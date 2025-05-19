@@ -27,7 +27,7 @@
                     <!-- small box -->
                     <div class="small-box bg-success">
                         <div class="inner">
-                            <h3>{{$inventory}}</h3>
+                            <h3>{{ number_format($inventory) }}</h3>
 
                             <p>Inventories</p>
                         </div>
@@ -38,11 +38,11 @@
                     </div>
                 </div>
                 <!-- ./col -->
-                                <div class="col-lg-3 col-6">
+                <div class="col-lg-3 col-6">
                     <!-- small box -->
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3>{{$leads}}</h3>
+                            <h3>{{ number_format($leads) }}</h3>
 
                             <p>Leads</p>
                         </div>
@@ -57,7 +57,7 @@
                     <!-- small box -->
                     <div class="small-box bg-warning">
                         <div class="inner">
-                            <h3>{{$dealer}}</h3>
+                            <h3>{{ number_format($dealer) }}</h3>
 
                             <p>User Registrations</p>
                         </div>
@@ -72,7 +72,7 @@
                     <!-- small box -->
                     <div class="small-box bg-danger">
                         <div class="inner">
-                            <h3>{{$invoice}}</h3>
+                            <h3>{{ number_format($invoice) }}</h3>
 
                             <p>Invoices</p>
                         </div>

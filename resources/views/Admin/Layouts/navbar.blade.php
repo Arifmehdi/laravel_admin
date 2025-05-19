@@ -8,7 +8,7 @@
             <a href="{{ route('admin.dashboard') }}" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="#" class="nav-link">Logout</a>
+            <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
         </li>
     </ul>
 
@@ -148,3 +148,7 @@
         </li>
     </ul>
 </nav>
+
+<form id="logout-form" method="POST" action="{{ route('admin.logout') }}" style="display: none;">
+    @csrf
+</form>

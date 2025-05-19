@@ -33,10 +33,7 @@
 {{-- <script src="{{ asset('backend/admin') }}/dist/js/demo.js"></script> --}}
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{ asset('backend/admin') }}/dist/js/pages/dashboard.js"></script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
-    integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
-    data-cf-beacon='{"rayId":"940f50772f292a54","version":"2025.4.0-1-g37f21b1","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"2437d112162f4ec4b63c3ca0eb38fb20","b":1}'
-    crossorigin="anonymous"></script>
+
 
 <script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js "></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
@@ -59,4 +56,39 @@
             };
             toastr[type](message);
         }
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+
+<script>
+document.getElementById('logout-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    toastr.options = {
+        closeButton: true,
+        progressBar: true,
+        positionClass: "toast-top-right",
+        timeOut: 5000,
+        extendedTimeOut: 1000,
+        preventDuplicates: true,
+        onclick: function() {
+            document.getElementById('logout-form').submit();
+        }
+    };
+
+    toastr.warning(
+        'Are you sure you want to logout?<br><br><button class="btn btn-sm btn-danger mt-2">Yes, Logout</button>',
+        'Confirm Logout',
+        {
+            timeOut: 10000,
+            extendedTimeOut: 2000,
+            onShown: function(toast) {
+                $(toast).find('.btn').click(function() {
+                    document.getElementById('logout-form').submit();
+                });
+            }
+        }
+    );
+});
 </script>
