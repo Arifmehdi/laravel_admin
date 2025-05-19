@@ -59,36 +59,37 @@
     <!-- ./wrapper -->
     @include('Admin.Layouts.footer')
     @stack('scripts')
+    @push('scripts')
+        <script>
+            $(document).ready(function() {
+                // Initialize nav treeview
+                $('.nav-treeview').hide();
+                $('.has-treeview').on('click', function(e) {
+                    e.preventDefault();
 
-    <script>
-        $(document).ready(function() {
-            // Initialize nav treeview
-            $('.nav-treeview').hide();
-            $('.has-treeview').on('click', function(e) {
-                e.preventDefault();
+                    // Close other open menus at the same level
+                    $(this).siblings('.has-treeview').removeClass('menu-open');
+                    $(this).siblings('.has-treeview').find('.nav-treeview').slideUp();
 
-                // Close other open menus at the same level
-                $(this).siblings('.has-treeview').removeClass('menu-open');
-                $(this).siblings('.has-treeview').find('.nav-treeview').slideUp();
-
-                // Toggle current menu
-                $(this).toggleClass('menu-open');
-                $(this).find('> .nav-treeview').slideToggle();
+                    // Toggle current menu
+                    $(this).toggleClass('menu-open');
+                    $(this).find('> .nav-treeview').slideToggle();
+                });
             });
-        });
-        // Add this to your script
-        $(function() {
-            // Get current route
-            const currentRoute = "{{ request()->route()->getName() }}";
+            // Add this to your script
+            $(function() {
+                // Get current route
+                const currentRoute = "{{ request()->route()->getName() }}";
 
-            // Find matching nav link and expand parents
-            $('.nav-link[href*="' + currentRoute + '"]').each(function() {
-                $(this).addClass('active');
-                $(this).parents('.has-treeview').addClass('menu-open');
-                $(this).parents('.nav-treeview').css('display', 'block');
+                // Find matching nav link and expand parents
+                $('.nav-link[href*="' + currentRoute + '"]').each(function() {
+                    $(this).addClass('active');
+                    $(this).parents('.has-treeview').addClass('menu-open');
+                    $(this).parents('.nav-treeview').css('display', 'block');
+                });
             });
-        });
-    </script>
+        </script>
+    @endpush
 </body>
 
 </html>

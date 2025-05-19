@@ -65,8 +65,8 @@
                 </li>
 
                 <!-- Inventory Section -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <li class="nav-item has-treeview {{ in_array(Route::currentRouteName(), ['admin.inventory']) ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), ['admin.inventory']) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-car"></i>
                         <p>
                             Inventory
@@ -76,7 +76,7 @@
                     </a>
                     <ul class="nav nav-treeview" style="padding-left: 15px;">
                         <li class="nav-item">
-                            <a href="{{ route('admin.inventory') }}" class="nav-link">
+                            <a href="{{ route('admin.inventory') }}" class="nav-link  {{ in_array(Route::currentRouteName(), ['admin.inventory']) ? 'active' : '' }}">
                                 <i class="fas fa-list nav-icon"></i>
                                 <p>Inventory List</p>
                             </a>
