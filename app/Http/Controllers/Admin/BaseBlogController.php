@@ -3,13 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Yajra\DataTables\DataTables;
-
-
 
 class BaseBlogController extends Controller
 {
@@ -31,29 +27,11 @@ class BaseBlogController extends Controller
                 ->where('sub_category_id', $typeId)
                 ->orderBy('created_at', 'desc');
 
-            return DataTables::of($data)
+            return datatables()->of($data)
                 ->addIndexColumn()
                 ->addColumn('DT_RowIndex', function ($row) {
                     static $count = 1;
                     return $count++;
-                })
-                ->addColumn('created_at', function ($row) {
-                    // If created_at is already a timestamp (integer)
-                    if (is_numeric($row->created_at)) {
-                        return date('m-d-Y', $row->created_at);
-                    }
-
-                    // If created_at is a string date (like from database)
-                    if (is_string($row->created_at)) {
-                        return date('m-d-Y', strtotime($row->created_at));
-                    }
-
-                    // If created_at is a Carbon instance (Laravel default)
-                    if ($row->created_at instanceof \Carbon\Carbon) {
-                        return $row->created_at->format('m-d-Y');
-                    }
-
-                    return $row->created_at; // fallback
                 })
                 ->addColumn('status', function ($row) {
                     return $row->status
@@ -64,35 +42,32 @@ class BaseBlogController extends Controller
                     $btn = '<div class="btn-group" role="group">';
 
                     // View button
-                    $btn .= '<a href="javascript:void(0)" data-id="' . $row->id . '" class="view btn btn-info btn-sm mr-1" title="View">
-                <i class="fas fa-eye"></i>
-             </a>';
+                    $btn .= '<a href="javascript:void(0)" data-id="'.$row->id.'" class="view btn btn-info btn-sm mr-1" title="View">
+                                <i class="fas fa-eye"></i>
+                             </a>';
 
                     // Edit button
-                    $btn .= '<a href="javascript:void(0)" data-id="' . $row->id . '" class="edit btn btn-primary btn-sm mr-1" title="Edit">
-                <i class="fas fa-edit"></i>
-             </a>';
+                    $btn .= '<a href="javascript:void(0)" data-id="'.$row->id.'" class="edit btn btn-primary btn-sm mr-1" title="Edit">
+                                <i class="fas fa-edit"></i>
+                             </a>';
 
                     // Status toggle button
                     $btnClass = $row->status ? 'btn-success' : 'btn-warning';
                     $btnIcon = $row->status ? 'fa-check-circle' : 'fa-times-circle';
 
-                    $btn .= '<a href="javascript:void(0)" data-id="' . $row->id . '" data-status="' . $row->status . '" class="status-toggle btn btn-sm mr-1 ' . $btnClass . '" title="Toggle Status">
-                <i class="fas ' . $btnIcon . '"></i>
-             </a>';
+                    $btn .= '<a href="javascript:void(0)" data-id="'.$row->id.'" data-status="'.$row->status.'" class="status-toggle btn btn-sm mr-1 '.$btnClass.'" title="Toggle Status">
+                                <i class="fas '.$btnIcon.'"></i>
+                             </a>';
 
                     // Delete button
-                    $btn .= '<a href="javascript:void(0)" data-id="' . $row->id . '" class="delete btn btn-danger btn-sm" title="Delete">
-                <i class="fas fa-trash"></i>
-             </a>';
+                    $btn .= '<a href="javascript:void(0)" data-id="'.$row->id.'" class="delete btn btn-danger btn-sm" title="Delete">
+                                <i class="fas fa-trash"></i>
+                             </a>';
 
                     $btn .= '</div>';
 
                     return $btn;
                 })
-                // ->addColumn('action', function ($row) {
-                //     return '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
-                // })
                 ->rawColumns(['status', 'action'])
                 ->make(true);
         }
@@ -111,47 +86,59 @@ class BaseBlogController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'title' => 'required|string',
+            'title' => 'required|string|max:255',
+            'category_id' => 'required|exists:blog_categories,id',
+            'sub_category_id' => 'required|exists:blog_sub_categories,id',
             'description' => 'required|string',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,webp,avif|max:2048',
-        ], [
-            'title.required' => 'Title is required',
-            'description.required' => 'Description is required',
-            'image.image' => 'Invalid image format',
-            'image.max' => 'Image size should not exceed 2MB',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'status' => 'required|boolean',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['status' => 'error', 'errors' => $validator->errors()], 422);
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
         }
 
-        $new = new Blog();
-        $new->user_id = auth('admin')->id();
-        $new->category_id = $request->category_id;
-        $new->sub_category_id = $request->sub_category_id;
-        $new->type = $request->sub_category_id;
-        $new->title = $request->title;
-        $new->slug = strtolower(str_replace(' ', '-', trim($request->title)));
-        $new->sub_title = $request->sub_title;
-        $new->description = $request->description;
+        try {
+            $data = [
+                'user_id' => auth('admin')->id(),
+                'category_id' => $request->category_id,
+                'sub_category_id' => $request->sub_category_id,
+                'type' => $request->sub_category_id,
+                'title' => $request->title,
+                'slug' => strtolower(str_replace(' ', '-', trim($request->title))),
+                'sub_title' => $request->sub_title,
+                'description' => $request->description,
+                'status' => $request->status,
+                'blog_status' => 1,
+                'seo_description' => $request->seo_description,
+                'seo_keyword' => $request->seo_keywords,
+                'hash_keyword' => $request->hashKeyword,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
 
-        if ($request->hasFile('image')) {
-            $path = 'frontend/assets/images/blog/';
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path($path), $imageName);
-            $new->img = $imageName;
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('frontend/assets/images/blog'), $imageName);
+                $data['img'] = $imageName;
+            }
+
+            DB::table('blogs')->insert($data);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Blog created successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error creating blog: ' . $e->getMessage()
+            ], 500);
         }
-
-        $new->status = $request->status;
-        $new->blog_status = 1;
-        $new->seo_description = $request->seo_description;
-        // $keywords = implode(',', str_replace('×', '', $request->keywords));
-        $new->seo_keyword = $request->seo_keywords;
-        $new->hash_keyword = $request->hashKeyword;
-        $new->save();
-
-        return response()->json(['status' => 'success', 'message' => 'Blog added successfully']);
     }
 
     public function edit(Request $request)
@@ -207,25 +194,35 @@ class BaseBlogController extends Controller
 
     public function update(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|exists:blogs,id',
             'title' => 'required|string|max:255',
             'category_id' => 'required|exists:blog_categories,id',
             'sub_category_id' => 'required|exists:blog_sub_categories,id',
             'description' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'status' => 'required|boolean',
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
         try {
             $data = [
-                'title' => $request->title,
                 'category_id' => $request->category_id,
                 'sub_category_id' => $request->sub_category_id,
+                'title' => $request->title,
+                'slug' => strtolower(str_replace(' ', '-', trim($request->title))),
                 'sub_title' => $request->sub_title,
                 'description' => $request->description,
+                'status' => $request->status,
                 'seo_description' => $request->seo_description,
                 'seo_keyword' => $request->seo_keywords,
                 'hash_keyword' => $request->hashKeyword,
-                'status' => $request->status,
                 'updated_at' => now(),
             ];
 
