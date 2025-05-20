@@ -42,6 +42,12 @@ Route::prefix('admin')->as('admin.')->group(function () {
         Route::get('inventories', [InventoryController::class, 'index'])->name('inventory');
 
         Route::post('blog/store', [BlogController::class, 'store'])->name('blog.store');
+        Route::put('blog/update', [BlogController::class, 'update'])->name('blog.update');
+        Route::post('blog/status', [BlogController::class, 'status'])->name('blog.status');
+        Route::get('blog/edit', [BlogController::class, 'edit'])->name('blog.edit');
+        Route::get('blog/show', [BlogController::class, 'show'])->name('blog.show');
+        Route::delete('blog/destroy', [BlogController::class, 'destroy'])->name('blog.destroy');
+
         Route::get('auto-news', [BlogController::class, 'autoNews'])->name('autoNews');
         Route::get('reviews', [BlogController::class, 'reviews'])->name('reviews');
         Route::get('tools-and-advice', [BlogController::class, 'toolsAndAdvice'])->name('toolsAndAdvice');
