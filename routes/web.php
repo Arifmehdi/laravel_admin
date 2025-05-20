@@ -60,5 +60,14 @@ Route::prefix('admin')->as('admin.')->group(function () {
         Route::get('financial', [BlogController::class, 'financial'])->name('financial');
 
         Route::get('banner', [BannerController::class, 'index'])->name('banner');
+        Route::group(['prefix' => 'banner', 'as' => 'banner.'], function () {
+            // Route::get('/', [BannerController::class, 'index'])->name('banner');
+            Route::post('/', [BannerController::class, 'store'])->name('store');
+            Route::get('/show', [BannerController::class, 'show'])->name('show');
+            Route::get('/edit', [BannerController::class, 'edit'])->name('edit');
+            Route::post('/status', [BannerController::class, 'status'])->name('status');
+            Route::put('/update', [BannerController::class, 'update'])->name('update');
+            Route::delete('/destroy', [BannerController::class, 'destroy'])->name('destroy');
+        });
     });
 });
