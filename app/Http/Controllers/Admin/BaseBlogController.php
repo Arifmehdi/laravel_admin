@@ -28,7 +28,7 @@ class BaseBlogController extends Controller
                     'blog_categories.name as category_name',
                     'blog_sub_categories.name as sub_category_name'
                 )
-                ->where('type', $typeId)
+                ->where('sub_category_id', $typeId)
                 ->orderBy('created_at', 'desc');
 
             return DataTables::of($data)
