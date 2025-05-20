@@ -39,7 +39,19 @@ Route::prefix('admin')->as('admin.')->group(function () {
         Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
         Route::get('blank', [DashboardController::class, 'blank'])->name('blank');
-        Route::get('inventories', [InventoryController::class, 'index'])->name('inventory');
+
+        Route::group(['prefix' => 'inventory', 'as' => 'inventory.'], function () {
+            Route::get('/', [InventoryController::class, 'index'])->name('index');
+            Route::get('/create', [InventoryController::class, 'create'])->name('create');
+            Route::post('/', [InventoryController::class, 'store'])->name('store');
+            Route::get('/{id}', [InventoryController::class, 'show'])->name('show');
+            Route::get('/{id}/edit', [InventoryController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [InventoryController::class, 'update'])->name('update');
+            Route::post('/{id}/status', [InventoryController::class, 'status'])->name('status');
+            Route::delete('/{id}', [InventoryController::class, 'destroy'])->name('destroy');
+        });
+
+        // Route::get('inventories', [InventoryController::class, 'index'])->name('inventory');
 
         Route::post('blog/store', [BlogController::class, 'store'])->name('blog.store');
         Route::put('blog/update', [BlogController::class, 'update'])->name('blog.update');

@@ -65,8 +65,8 @@
                 </li>
 
                 <!-- Inventory Section -->
-                <li class="nav-item has-treeview {{ in_array(Route::currentRouteName(), ['admin.inventory']) ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), ['admin.inventory']) ? 'active' : '' }}">
+                <li class="nav-item has-treeview {{ in_array(Route::currentRouteName(), ['admin.inventory.index']) ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), ['admin.inventory.index']) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-car"></i>
                         <p>
                             Inventory
@@ -76,7 +76,7 @@
                     </a>
                     <ul class="nav nav-treeview" style="padding-left: 15px;">
                         <li class="nav-item">
-                            <a href="{{ route('admin.inventory') }}" class="nav-link  {{ in_array(Route::currentRouteName(), ['admin.inventory']) ? 'active' : '' }}">
+                            <a href="{{ route('admin.inventory.index') }}" class="nav-link  {{ in_array(Route::currentRouteName(), ['admin.inventory.index']) ? 'active' : '' }}">
                                 <i class="fas fa-list nav-icon"></i>
                                 <p>Inventory List</p>
                             </a>
@@ -208,7 +208,7 @@
                 <li class="nav-header">OTHERS</li>
 
                 <!-- Blank Page -->
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="{{ route('admin.blank') }}"
                         class="nav-link  {{ in_array(Route::currentRouteName(), ['admin.blank']) ? 'active' : '' }}">
                         <i class="nav-icon far fa-file-alt"></i>
@@ -216,7 +216,7 @@
                             Blank
                         </p>
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a href="{{ route('admin.banner') }}"
                         class="nav-link {{ in_array(Route::currentRouteName(), ['admin.banner']) ? 'active' : '' }}">

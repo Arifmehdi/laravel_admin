@@ -315,8 +315,8 @@
             // $('.select2bs4').select2({
             //     theme: 'bootstrap4'
             // });
+            $('.summernote').summernote();
             var type = "{{ $type }}";
-            $('#summernote').summernote();
 
             // DataTable initialization
             var dataTable = $('#data-table').DataTable({
