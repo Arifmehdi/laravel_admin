@@ -37,8 +37,9 @@ class BannerController extends Controller
                 })
                 ->addColumn('image', function ($row) {
                     // dd($row->image);
+                    $frontendUrl = config('frontend.url');
                     return $row->image
-                        ? '<img src="https://bestdreamcar.com/dashboard/images/banners/' . $row->image . '" style="width: 150px; height: auto; border-radius: 4px;">'
+                        ? '<img src=' . $frontendUrl .'/dashboard/images/banners/'. $row->image . ' style="width: 150px; height: auto; border-radius: 4px;">'
                         : '<span class="text-muted">No image</span>';
                 })
                 ->addColumn('status', function ($row) {

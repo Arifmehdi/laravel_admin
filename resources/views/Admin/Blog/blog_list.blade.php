@@ -277,6 +277,7 @@
                                 <label>Current Image</label>
                                 <div id="currentImageContainer" class="mb-2"></div>
                                 <label for="editImageInput">Change Image</label>
+                                <input type="text" name="old_image" class="form-control" id="oldEditImageInput">
                                 <input type="file" name="image" class="form-control" id="editImageInput">
                             </div>
                         </div>
@@ -293,6 +294,10 @@
 
 @push('scripts')
     <script>
+        window.frontendConfig = {
+            url: '{{ config('frontend.url') }}'
+        };
+
         $(function() {
             // Initialize summernote
             // $('.summernote').summernote({
@@ -332,12 +337,12 @@
                     {
                         data: 'img',
                         name: 'blogs.img',
-                        render: function(data) {
-                            return data ?
-                                '<img src="https://bestdreamcar.com/frontend/assets/images/blog/' +
-                                data + '" width="50">' :
-                                'No Image';
-                        }
+                        // render: function(data) {
+                        //     return data ?
+                        //         '<img src="https://bestdreamcar.com/frontend/assets/images/blog/' +
+                        //         data + '" width="50">' :
+                        //         'No Image';
+                        // }
                     },
                     {
                         data: 'title',
@@ -433,6 +438,7 @@
                         $('#editSeoDescription').val(response.seo_description);
                         $('#editSeoKeywords').val(response.seo_keyword);
                         $('#editHashKeyword').val(response.hash_keyword);
+                        $('#oldEditImageInput').val(response.img);
 
                         // Set status radio buttons
                         if (response.status == 1) {
@@ -443,7 +449,8 @@
 
                         // Display current image
                         var imageHtml = response.img ?
-                            '<img src="https://bestdreamcar.com/frontend/assets/images/blog/' +
+                            '<img src="' + window.frontendConfig.url +
+                            '/frontend/assets/images/blog/' +
                             response.img + '" width="100" class="img-thumbnail mb-2">' :
                             '<p>No image</p>';
                         $('#currentImageContainer').html(imageHtml);
@@ -502,6 +509,9 @@
                         id: id
                     },
                     success: function(response) {
+                        var imageUrl = response.img ?
+                            `${window.frontendConfig.url}/frontend/assets/images/blog/${response.img}` :
+                            `${window.frontendConfig.url}/frontend/assets/images/blog/default.jpg`;
                         var modalHtml = `
                             <div class="modal fade" id="viewBlogModal" tabindex="-1" role="dialog">
                                 <div class="modal-dialog modal-lg" role="document">
@@ -515,7 +525,7 @@
                                         <div class="modal-body">
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                    <img src="https://bestdreamcar.com/frontend/assets/images/blog/${response.img || 'default.jpg'}" class="img-fluid" alt="Blog Image">
+                                                    <img src="${imageUrl}" class="img-fluid" alt="Blog Image">
                                                 </div>
                                                 <div class="col-md-8">
                                                     <h3>${response.title}</h3>

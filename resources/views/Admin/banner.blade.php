@@ -209,6 +209,10 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
+            window.frontendConfig = {
+                url: '{{ config('frontend.url') }}'
+            };
+
             // Initialize DataTable
             var table = $('#data-table').DataTable({
                 processing: true,
@@ -341,7 +345,7 @@
 
                             if (response.data.image) {
                                 $('#viewBannerImage').attr('src',
-                                    'https://bestdreamcar.com/dashboard/images/banners/' +
+                                    window.frontendConfig.url+'/dashboard/images/banners/' +
                                     response.data.image);
                             } else {
                                 $('#viewBannerImage').attr('src',
@@ -379,7 +383,7 @@
 
                             if (response.data.image) {
                                 $('#currentBannerImage').attr('src',
-                                    'https://bestdreamcar.com/dashboard/images/banners/' +
+                                    window.frontendConfig.url+'/dashboard/images/banners/' +
                                     response.data.image);
                             } else {
                                 $('#currentBannerImage').attr('src',
