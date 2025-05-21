@@ -166,6 +166,7 @@
                         <div class="form-group">
                             <label for="editName">Banner Name</label>
                             <input type="text" class="form-control" id="editName" name="name" required>
+                            <input type="hidden" name="old_image" class="form-control" id="oldEditImageInput">
                         </div>
                         <div class="form-group">
                             <input type="hidden" id="hiddenEditPosition" name="position">
@@ -345,7 +346,8 @@
 
                             if (response.data.image) {
                                 $('#viewBannerImage').attr('src',
-                                    window.frontendConfig.url+'/dashboard/images/banners/' +
+                                    window.frontendConfig.url +
+                                    '/dashboard/images/banners/' +
                                     response.data.image);
                             } else {
                                 $('#viewBannerImage').attr('src',
@@ -379,11 +381,13 @@
                             $('#editName').val(toTitleCase(response.data.name));
                             $('#editPosition').val(response.data.position);
                             $('#hiddenEditPosition').val(response.data.position);
+                            $('#oldEditImageInput').val(response.data.image);
                             $('#editStatus').prop('checked', response.data.status);
 
                             if (response.data.image) {
                                 $('#currentBannerImage').attr('src',
-                                    window.frontendConfig.url+'/dashboard/images/banners/' +
+                                    window.frontendConfig.url +
+                                    '/dashboard/images/banners/' +
                                     response.data.image);
                             } else {
                                 $('#currentBannerImage').attr('src',

@@ -277,7 +277,7 @@
                                 <label>Current Image</label>
                                 <div id="currentImageContainer" class="mb-2"></div>
                                 <label for="editImageInput">Change Image</label>
-                                <input type="text" name="old_image" class="form-control" id="oldEditImageInput">
+                                <input type="hidden" name="old_image" class="form-control" id="oldEditImageInput">
                                 <input type="file" name="image" class="form-control" id="editImageInput">
                             </div>
                         </div>

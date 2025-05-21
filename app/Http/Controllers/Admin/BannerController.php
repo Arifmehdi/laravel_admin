@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use PDO;
 use Yajra\DataTables\DataTables;
@@ -39,7 +40,7 @@ class BannerController extends Controller
                     // dd($row->image);
                     $frontendUrl = config('frontend.url');
                     return $row->image
-                        ? '<img src=' . $frontendUrl .'/dashboard/images/banners/'. $row->image . ' style="width: 150px; height: auto; border-radius: 4px;">'
+                        ? '<img src=' . $frontendUrl . '/dashboard/images/banners/' . $row->image . ' style="width: 150px; height: auto; border-radius: 4px;">'
                         : '<span class="text-muted">No image</span>';
                 })
                 ->addColumn('status', function ($row) {
@@ -81,7 +82,7 @@ class BannerController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'position' => 'required|in:top,middle,bottom',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'status' => 'boolean'
         ]);
 
@@ -162,7 +163,7 @@ class BannerController extends Controller
             'id' => 'required|exists:banners,id',
             'name' => 'required|string|max:255',
             // 'position' => 'required|in:top,middle,bottom',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'status' => 'boolean'
         ]);
 
@@ -183,10 +184,39 @@ class BannerController extends Controller
             ];
 
             if ($request->hasFile('image')) {
-                $imageName = time() . '.' . $request->image->extension();
-                $request->image->move(public_path('dashboard/images/banners'), $imageName);
-                $updateData['image'] = $imageName;
+                $image = $request->file('image');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+
+                try {
+                    $frontendUrl = config('frontend.url');
+                    // Send the image to Application B's API
+                    $response = Http::asMultipart()
+                        ->attach('image', file_get_contents($image->getRealPath()), $imageName)
+                        ->post($frontendUrl . '/api/banner/upload', [
+                            'is_update' => $request->isMethod('put') || $request->isMethod('patch'), // Check if it's an update
+                            'old_image' => $request->has('old_image') ? $request->old_image : null, // Pass old image name if updating
+                        ]);
+
+                    if (!$response->successful()) {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => 'Failed to upload image: ' . $response->body(),
+                        ], 500);
+                    }
+
+                    $updateData['image'] = $imageName; // Store new image name
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Error uploading image: ' . $e->getMessage(),
+                    ], 500);
+                }
             }
+            // if ($request->hasFile('image')) {
+            //     $imageName = time() . '.' . $request->image->extension();
+            //     $request->image->move(public_path('dashboard/images/banners'), $imageName);
+            //     $updateData['image'] = $imageName;
+            // }
 
             DB::table('banners')
                 ->where('id', $request->id)
