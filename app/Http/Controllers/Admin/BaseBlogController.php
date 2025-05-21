@@ -131,13 +131,14 @@ class BaseBlogController extends Controller
 
 
             if ($request->hasFile('image')) {
+                $frontendUrl = config('frontend.url');
                 $image = $request->file('image');
                 $imageName = time() . '.' . $image->getClientOriginalExtension();
                 try {
                     // Send the image to Application B's API
                     $response = Http::asMultipart()
                         ->attach('image', file_get_contents($image->getRealPath()), $imageName)
-                        ->post('http://carbazar.test/api/blog/upload');
+                        ->post($frontendUrl . '/api/blog/upload');
 
                     if (!$response->successful()) {
                         return response()->json([
@@ -293,10 +294,11 @@ class BaseBlogController extends Controller
                 $imageName = time() . '.' . $image->getClientOriginalExtension();
 
                 try {
+                    $frontendUrl = config('frontend.url');
                     // Send the image to Application B's API
                     $response = Http::asMultipart()
                         ->attach('image', file_get_contents($image->getRealPath()), $imageName)
-                        ->post('http://carbazar.test/api/blog/upload', [
+                        ->post($frontendUrl . '/api/blog/upload', [
                             'is_update' => $request->isMethod('put') || $request->isMethod('patch'), // Check if it's an update
                             'old_image' => $request->has('old_image') ? $request->old_image : null, // Pass old image name if updating
                         ]);
