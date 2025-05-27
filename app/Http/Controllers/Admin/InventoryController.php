@@ -36,7 +36,7 @@ class InventoryController extends Controller
                     'dealers.city as dealer_city',
                     'dealers.state as dealer_state'
                 )
-                ->orderBy('created_at', 'desc');
+                ->orderBy('created_date', 'desc');
 
             return DataTables::of($data)
                 ->addIndexColumn()
