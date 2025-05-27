@@ -24,6 +24,7 @@ class InventoryController extends Controller
                     'main_inventories.year',
                     'main_inventories.make',
                     'main_inventories.model',
+                    'main_inventories.deal_id',
                     'main_inventories.created_date',
                     'main_inventories.payment_date',
                     'main_inventories.created_at',
@@ -36,7 +37,7 @@ class InventoryController extends Controller
                     'dealers.city as dealer_city',
                     'dealers.state as dealer_state'
                 )
-                ->orderBy('main_inventories.created_date', 'desc')
+                // ->orderBy('main_inventories.created_date', 'desc')
                 ->orderBy('main_inventories.id', 'desc');
 
             return DataTables::of($data)
