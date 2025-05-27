@@ -213,8 +213,8 @@
                         name: 'dealers.state'
                     },
                     {
-                        data: 'created_date',
-                        name: 'dealers.created_date'
+                        data: 'date',
+                        name: 'main_inventories.created_date'
                     },
                     {
                         data: 'payment_date',
@@ -222,7 +222,7 @@
                     },
                     {
                         data: 'active_till',
-                        name: 'dealers.active_till'
+                        name: 'main_inventories.active_till'
                     },
                     {
                         data: 'package',

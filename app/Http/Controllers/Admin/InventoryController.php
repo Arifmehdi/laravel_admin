@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\MainInventory;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
@@ -47,7 +48,9 @@ class InventoryController extends Controller
                         ? '<span class="badge bg-success">Active</span>'
                         : '<span class="badge bg-danger">Inactive</span>';
                 })
-
+                ->addColumn('date', function ($row) {
+                    return Carbon::parse($row->created_date)->format('m-d-Y');
+                })
                 ->addColumn('action', function ($row) {
                     $btn = '<div class="btn-group" role="group">';
 
