@@ -53,6 +53,9 @@ class BannerController extends Controller
                     $btnIcon = $row->status ? 'fa-check-circle' : 'fa-times-circle';
                     return '
                         <div class="btn-group" role="group">
+                            <button class="btn btn-secondary btn-sm link-btn mr-1" data-id="' . $row->id . '" title="URL">
+                                <i class="fas fa-link"></i>
+                            </button>
                             <button class="btn btn-info btn-sm view-btn mr-1" data-id="' . $row->id . '" title="View">
                                 <i class="fas fa-eye"></i>
                             </button>
@@ -156,6 +159,65 @@ class BannerController extends Controller
             'data' => $banner
         ]);
     }
+
+    public function link(Request $request)
+    {
+        $banner = DB::table('banners')
+            ->where('id', $request->id)
+            ->first();
+
+        if (!$banner) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Banner not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $banner
+        ]);
+    }
+
+    public function linkUpdate(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|exists:banners,id',
+            'editUrl' => 'required|string',
+            'status' => 'boolean'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $updateData = [
+                'url' => $request->editUrl,
+                'new_window' => $request->status ?? 0,
+                'updated_at' => now()
+            ];
+
+            DB::table('banners')
+                ->where('id', $request->id)
+                ->update($updateData);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Banner URL updated successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update banner URL: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
 
     public function update(Request $request)
     {

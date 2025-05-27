@@ -205,6 +205,43 @@
             </div>
         </div>
     </div>
+
+    <!-- url Banner Modal -->
+    <div class="modal fade" id="linkBannerModal" tabindex="-1" role="dialog" aria-labelledby="linkBannerModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="linkBannerModalLabel">Edit Banner URL</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="linkBannerForm" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" id="linkBannerId" name="id">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="editName">URL</label>
+                            <input type="text" class="form-control" id="editUrl" name="editUrl" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Open in New Window</label>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="linkNewWindow" name="NewWindow">
+                                <label class="custom-control-label" for="linkNewWindow">Active</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update Banner URL</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
@@ -365,6 +402,67 @@
                 });
             });
 
+            // link banner - load data
+            $(document).on('click', '.link-btn', function() {
+                var id = $(this).data('id');
+                $.ajax({
+                    url: '{{ route('admin.banner.link') }}',
+                    type: 'GET',
+                    data: {
+                        id: id
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            $('#linkBannerId').val(response.data.id);
+                            $('#editUrl').val(response.data.url);
+                            $('#linkNewWindow').prop('checked', response.data.new_window);
+
+                            $('#linkBannerModal').modal('show');
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    },
+                    error: function() {
+                        toastr.error('Failed to load banner data for editing.');
+                    }
+                });
+            });
+
+            // link banner form submission
+            $('#linkBannerForm').submit(function(e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                var id = $('#linkBannerId').val();
+                formData.set('status', $('#linkNewWindow').is(':checked') ? 1 : 0);
+
+                $.ajax({
+                    url: '{{ route('admin.banner.link.update') }}',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+                            $('#linkBannerModal').modal('hide');
+                            table.draw();
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 422) {
+                            var errors = xhr.responseJSON.errors;
+                            $.each(errors, function(key, value) {
+                                toastr.error(value[0]);
+                            });
+                        } else {
+                            toastr.error('An error occurred while updating the URL.');
+                        }
+                    }
+                });
+            });
+
             // Edit banner - load data
             $(document).on('click', '.edit-btn', function() {
                 var id = $(this).data('id');
@@ -480,6 +578,8 @@
                     }
                 });
             });
+
+
 
             // Delete banner
             $(document).on('click', '.delete-btn', function() {

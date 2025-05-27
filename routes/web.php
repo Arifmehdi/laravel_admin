@@ -77,6 +77,8 @@ Route::prefix('admin')->as('admin.')->group(function () {
             Route::post('/', [BannerController::class, 'store'])->name('store');
             Route::get('/show', [BannerController::class, 'show'])->name('show');
             Route::get('/edit', [BannerController::class, 'edit'])->name('edit');
+            Route::get('/link', [BannerController::class, 'link'])->name('link');
+            Route::put('/link/update', [BannerController::class, 'linkUpdate'])->name('link.update');
             Route::post('/status', [BannerController::class, 'status'])->name('status');
             Route::put('/update', [BannerController::class, 'update'])->name('update');
             Route::delete('/destroy', [BannerController::class, 'destroy'])->name('destroy');
