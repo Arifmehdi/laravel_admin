@@ -65,8 +65,10 @@
                 </li>
 
                 <!-- Inventory Section -->
-                <li class="nav-item has-treeview {{ in_array(Route::currentRouteName(), ['admin.inventory.index']) ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), ['admin.inventory.index']) ? 'active' : '' }}">
+                <li
+                    class="nav-item has-treeview {{ in_array(Route::currentRouteName(), ['admin.inventory.index']) ? 'menu-open' : '' }}">
+                    <a href="#"
+                        class="nav-link {{ in_array(Route::currentRouteName(), ['admin.inventory.index']) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-car"></i>
                         <p>
                             Inventory
@@ -76,7 +78,8 @@
                     </a>
                     <ul class="nav nav-treeview" style="padding-left: 15px;">
                         <li class="nav-item">
-                            <a href="{{ route('admin.inventory.index') }}" class="nav-link  {{ in_array(Route::currentRouteName(), ['admin.inventory.index']) ? 'active' : '' }}">
+                            <a href="{{ route('admin.inventory.index') }}"
+                                class="nav-link  {{ in_array(Route::currentRouteName(), ['admin.inventory.index']) ? 'active' : '' }}">
                                 <i class="fas fa-list nav-icon"></i>
                                 <p>Inventory List</p>
                             </a>
@@ -95,7 +98,7 @@
 
                 <!-- Blogs Section -->
                 <li
-                    class="nav-item has-treeview {{ in_array(Route::currentRouteName(), ['admin.autoNews', 'admin.reviews', 'admin.toolsAndAdvice', 'admin.carBuyingAdvice', 'admin.carTips', 'admin.news', 'admin.innovation', 'admin.opinion', 'admin.financial']) ? 'menu-open' : '' }}">
+                    class="nav-item has-treeview {{ in_array(Route::currentRouteName(), ['admin.settings.general', 'admin.news', 'admin.innovation', 'admin.opinion', 'admin.financial']) ? 'menu-open' : '' }}">
                     <a href="#"
                         class="nav-link {{ in_array(Route::currentRouteName(), ['admin.autoNews', 'admin.reviews', 'admin.toolsAndAdvice', 'admin.carBuyingAdvice', 'admin.carTips', 'admin.news', 'admin.innovation', 'admin.opinion', 'admin.financial']) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-newspaper"></i>
@@ -220,11 +223,100 @@
                 <li class="nav-item">
                     <a href="{{ route('admin.banner') }}"
                         class="nav-link {{ in_array(Route::currentRouteName(), ['admin.banner']) ? 'active' : '' }}">
-                        <i class="nav-icon far fa-file-alt"></i>
+                        <i class="nav-icon far fa-images"></i>
                         <p>
                             Banner
                         </p>
                     </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.lead.index') }}"
+                        class="nav-link {{ in_array(Route::currentRouteName(), ['admin.lead.index']) ? 'active' : '' }}">
+                        <i class="nav-icon far fa-clipboard"></i>
+                        <p>
+                            Lead
+                        </p>
+                    </a>
+                </li>
+
+                <!-- Frontend Section Header -->
+                <li class="nav-header">SETTINGS MANAGEMENT</li>
+
+                <!-- Blogs Section -->
+                <li
+                    class="nav-item has-treeview {{ in_array(Route::currentRouteName(), ['admin.autoNews', 'admin.reviews', 'admin.toolsAndAdvice', 'admin.carBuyingAdvice', 'admin.carTips', 'admin.news', 'admin.innovation', 'admin.opinion', 'admin.financial']) ? 'menu-open' : '' }}">
+                    <a href="#"
+                        class="nav-link {{ in_array(Route::currentRouteName(), ['admin.autoNews', 'admin.reviews', 'admin.toolsAndAdvice', 'admin.carBuyingAdvice', 'admin.carTips', 'admin.news', 'admin.innovation', 'admin.opinion', 'admin.financial']) ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-tools"></i>
+                        <p>
+                            Settings
+                            <i class="right fas fa-angle-left"></i>
+                            <span class="badge badge-info right">9</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview"
+                        style="padding-left: 15px; display: {{ in_array(Route::currentRouteName(), ['admin.settings.general']) ? 'block' : 'none' }}">
+
+                        <!-- Research Subsection -->
+                        <li
+                            class="nav-item has-treeview {{ in_array(Route::currentRouteName(), ['admin.settings.general']) ? 'menu-open' : '' }}">
+                            <a href="#"
+                                class="nav-link {{ in_array(Route::currentRouteName(), ['admin.settings.general']) ? 'active' : '' }}">
+                                <i class="fas fa-cog fa-spin nav-icon"></i>
+                                <p>
+                                    General
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview"
+                                style="padding-left: 25px; display: {{ in_array(Route::currentRouteName(), ['admin.settings.general']) ? 'block' : 'none' }}">
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.settings.general') }}"
+                                        class="nav-link {{ Route::currentRouteName() == 'admin.autoNews' ? 'active' : '' }}">
+                                        <i class="fas fa-globe nav-icon"></i>
+                                        <p>Common</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.settings.general') }}"
+                                        class="nav-link {{ Route::currentRouteName() == 'admin.autoNews' ? 'active' : '' }}">
+                                        <i class="fas fa-tags nav-icon"></i>
+                                        <p>Meta Section</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!-- Beyond Car Subsection -->
+                        <li
+                            class="nav-item has-treeview {{ in_array(Route::currentRouteName(), ['admin.news', 'admin.innovation', 'admin.opinion', 'admin.financial']) ? 'menu-open' : '' }}">
+                            <a href="#"
+                                class="nav-link {{ in_array(Route::currentRouteName(), ['admin.news', 'admin.innovation', 'admin.opinion', 'admin.financial']) ? 'active' : '' }}">
+                                <i class="fas fa-sliders-h nav-icon"></i>
+                                <p>
+                                    Frontend
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview"
+                                style="padding-left: 25px; display: {{ in_array(Route::currentRouteName(), ['admin.news', 'admin.innovation', 'admin.opinion', 'admin.financial']) ? 'block' : 'none' }}">
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.news') }}"
+                                        class="nav-link {{ Route::currentRouteName() == 'admin.news' ? 'active' : '' }}">
+                                        <i class="fas fa-bullhorn nav-icon"></i>
+                                        <p>Top Menu</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.innovation') }}"
+                                        class="nav-link {{ Route::currentRouteName() == 'admin.innovation' ? 'active' : '' }}">
+                                        <i class="fas fa-atom nav-icon"></i>
+                                        <p>Footer Menu</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </nav>

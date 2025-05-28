@@ -4,7 +4,10 @@ use App\Http\Controllers\Admin\BannerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DealerController;
 use App\Http\Controllers\Admin\InventoryController;
+use App\Http\Controllers\Admin\LeadController;
+use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Auth\Authcontroller;
 
 Route::get('/', function () {
@@ -72,6 +75,9 @@ Route::prefix('admin')->as('admin.')->group(function () {
         Route::get('financial', [BlogController::class, 'financial'])->name('financial');
 
         Route::get('banner', [BannerController::class, 'index'])->name('banner');
+        Route::get('lead', [BannerController::class, 'index'])->name('banner');
+        Route::get('dealer/profile', [DealerController::class, 'index'])->name('dealer.profile');
+
         Route::group(['prefix' => 'banner', 'as' => 'banner.'], function () {
             // Route::get('/', [BannerController::class, 'index'])->name('banner');
             Route::post('/', [BannerController::class, 'store'])->name('store');
@@ -82,6 +88,16 @@ Route::prefix('admin')->as('admin.')->group(function () {
             Route::post('/status', [BannerController::class, 'status'])->name('status');
             Route::put('/update', [BannerController::class, 'update'])->name('update');
             Route::delete('/destroy', [BannerController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::group(['prefix' => 'lead', 'as' => 'lead.'], function () {
+            Route::get('/', [LeadController::class, 'index'])->name('index');
+        });
+
+        Route::group(['prefix' => 'settings', 'as' => 'settings.'], function () {
+            Route::get('/general', [SettingsController::class, 'index'])->name('general');
+            Route::get('image/get', [SettingsController::class, 'identify'])->name('image.get');
+            Route::post('add', [SettingsController::class, 'update'])->name('update');
         });
     });
 });
