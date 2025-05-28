@@ -138,6 +138,6 @@ class LeadController extends Controller
                 ->make(true);
         }
         // return view('backend.admin.lead.lead_show', compact('leads'), $data);
-        return view('admin.lead');
+        return view('Admin.lead');
     }
 }

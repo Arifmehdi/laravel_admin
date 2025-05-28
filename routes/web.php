@@ -75,7 +75,6 @@ Route::prefix('admin')->as('admin.')->group(function () {
         Route::get('financial', [BlogController::class, 'financial'])->name('financial');
 
         Route::get('banner', [BannerController::class, 'index'])->name('banner');
-        Route::get('lead', [BannerController::class, 'index'])->name('banner');
         Route::get('dealer/profile', [DealerController::class, 'index'])->name('dealer.profile');
 
         Route::group(['prefix' => 'banner', 'as' => 'banner.'], function () {
