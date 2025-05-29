@@ -96,6 +96,7 @@ Route::prefix('admin')->as('admin.')->group(function () {
         Route::group(['prefix' => 'settings', 'as' => 'settings.'], function () {
             Route::get('/general', [SettingsController::class, 'index'])->name('general');
             Route::get('/edit', [SettingsController::class, 'edit'])->name('edit');
+            Route::post('/update', [SettingsController::class, 'update'])->name('update');
 
             // Route::get('image/get', [SettingsController::class, 'identify'])->name('image.get');
             // Route::post('add', [SettingsController::class, 'update'])->name('update');
