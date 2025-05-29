@@ -173,25 +173,25 @@
                         </div>
                         <div class="form-group">
                             <label for="editName">Slider Title</label>
-                            <input type="text" class="form-control" id="site_title" name="site_title" required>
+                            <input type="text" class="form-control" id="slider_title" name="slider_title" required>
                         </div>
                         <div class="form-group">
                             <label for="editName">Slider Sub Title</label>
-                            <input type="text" class="form-control" id="site_title" name="site_title" required>
+                            <input type="text" class="form-control" id="slider_subtitle" name="slider_subtitle"
+                                required>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="editName">Pagination</label>
-                                    <input type="text" class="form-control" id="site_title" name="site_title"
+                                    <input type="text" class="form-control" id="pagination" name="pagination"
                                         required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="editName">Email</label>
-                                    <input type="text" class="form-control" id="site_title" name="site_title"
-                                        required>
+                                    <input type="text" class="form-control" id="email" name="email" required>
                                 </div>
                             </div>
                         </div>
@@ -199,15 +199,13 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="editName">Sitemap</label>
-                                    <input type="text" class="form-control" id="site_title" name="site_title"
-                                        required>
+                                    <input type="text" class="form-control" id="site_map" name="site_map" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="editName">Language</label>
-                                    <input type="text" class="form-control" id="site_title" name="site_title"
-                                        required>
+                                    <input type="text" class="form-control" id="language" name="language" required>
                                 </div>
                             </div>
                         </div>
@@ -215,15 +213,13 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="editName">Seperator</label>
-                                    <input type="text" class="form-control" id="site_title" name="site_title"
-                                        required>
+                                    <input type="text" class="form-control" id="separator" name="separator" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="editName">Timezone</label>
-                                    <input type="text" class="form-control" id="site_title" name="site_title"
-                                        required>
+                                    <input type="text" class="form-control" id="timezone" name="timezone" required>
                                 </div>
                             </div>
                         </div>
@@ -231,14 +227,14 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="editName">Time Formator</label>
-                                    <input type="text" class="form-control" id="site_title" name="site_title"
+                                    <input type="text" class="form-control" id="time_formate" name="time_formate"
                                         required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="editName">Date Formator</label>
-                                    <input type="text" class="form-control" id="site_title" name="site_title"
+                                    <input type="text" class="form-control" id="date_formate" name="date_formate"
                                         required>
                                 </div>
                             </div>
@@ -247,7 +243,7 @@
 
                         <div class="form-group">
                             <label for="editName">Phone</label>
-                            <input type="text" class="form-control" id="site_title" name="site_title" required>
+                            <input type="text" class="form-control" id="phone" name="phone" required>
                         </div>
                         <div class="form-group">
                             <label>Current Logo Image</label>
@@ -263,7 +259,7 @@
                         </div>
                         <div class="form-group">
                             <label>Current Slider Image</label>
-                            <img id="currentBannerImage" src="" class="img-fluid rounded mb-2"
+                            <img id="currentSliderImage" src="" class="img-fluid rounded mb-2"
                                 style="max-height: 150px;">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="sliderImagePreview"
@@ -275,7 +271,7 @@
                         </div>
                         <div class="form-group">
                             <label>Current Favicon Image</label>
-                            <img id="currentBannerImage" src="" class="img-fluid rounded mb-2"
+                            <img id="currentFaviconImage" src="" class="img-fluid rounded mb-2"
                                 style="max-height: 150px;">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="faviconImagePreview"
@@ -548,7 +544,7 @@
                 var id = $(this).data('id');
 
                 $.ajax({
-                    url: '{{ route('admin.banner.edit') }}',
+                    url: '{{ route('admin.settings.edit') }}',
                     type: 'GET',
                     data: {
                         id: id
@@ -556,11 +552,42 @@
                     success: function(response) {
                         if (response.success) {
                             $('#editBannerId').val(response.data.id);
-                            $('#editName').val(toTitleCase(response.data.name));
-                            $('#editPosition').val(response.data.position);
-                            $('#hiddenEditPosition').val(response.data.position);
-                            $('#oldEditImageInput').val(response.data.image);
-                            $('#editStatus').prop('checked', response.data.status);
+                            $('#site_title').val(response.data.site_title);
+                            $('#slider_title').val(response.data.slider_title);
+                            $('#slider_subtitle').val(response.data.slider_subtitle);
+                            $('#pagination').val(response.data.pagination);
+                            $('#language').val(response.data.language);
+                            $('#separator').val(response.data.separator);
+                            $('#timezone').val(response.data.timezone);
+                            $('#time_formate').val(response.data.time_formate);
+                            $('#date_formate').val(response.data.date_formate);
+                            $('#site_map').val(response.data.site_map);
+                            $('#email').val(response.data.email);
+                            $('#phone').val(response.data.phone);
+                            // $('#site_title').val(toTitleCase(response.data.site_title));
+                            // $('#site_map').val(toTitleCase(response.data.name));
+                            // $('#email').prop('checked', response.data.email);
+                            // $('#phone').prop('checked', response.data.phone);
+
+                            if (response.data.image) {
+                                $('#currentFaviconImage').attr('src',
+                                    window.frontendConfig.url +
+                                    '/dashboard/images/banners/' +
+                                    response.data.fav_image);
+                            } else {
+                                $('#currentFaviconImage').attr('src',
+                                    'https://via.placeholder.com/800x300?text=No+Image');
+                            }
+
+                            if (response.data.image) {
+                                $('#currentSliderImage').attr('src',
+                                    window.frontendConfig.url +
+                                    '/dashboard/images/banners/' +
+                                    response.data.slider_image);
+                            } else {
+                                $('#sliderImagePreview').attr('src',
+                                    'https://via.placeholder.com/800x300?text=No+Image');
+                            }
 
                             if (response.data.image) {
                                 $('#currentBannerImage').attr('src',

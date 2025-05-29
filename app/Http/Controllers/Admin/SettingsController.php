@@ -14,6 +14,7 @@ class SettingsController extends Controller
     {
         if ($request->ajax()) {
             $data = DB::table('general_settings')->first();
+
             $frontendUrl = config('frontend.url') . '/frontend/assets/images/logos/';
 
             return DataTables::of(collect([$data]))
@@ -52,5 +53,24 @@ class SettingsController extends Controller
                 ->make(true);
         }
         return view('Admin.settings');
+    }
+
+    public function edit(Request $request)
+    {
+        $general_settings = DB::table('general_settings')
+            ->where('id', $request->id)
+            ->first();
+
+        if (!$general_settings) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Settings not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $general_settings
+        ]);
     }
 }
