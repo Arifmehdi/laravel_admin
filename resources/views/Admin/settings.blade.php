@@ -572,7 +572,7 @@
                             if (response.data.image) {
                                 $('#currentFaviconImage').attr('src',
                                     window.frontendConfig.url +
-                                    '/dashboard/images/banners/' +
+                                    '/frontend/assets/images/' +
                                     response.data.fav_image);
                             } else {
                                 $('#currentFaviconImage').attr('src',
@@ -582,7 +582,7 @@
                             if (response.data.image) {
                                 $('#currentSliderImage').attr('src',
                                     window.frontendConfig.url +
-                                    '/dashboard/images/banners/' +
+                                    '/frontend/assets/images/' +
                                     response.data.slider_image);
                             } else {
                                 $('#sliderImagePreview').attr('src',
@@ -592,7 +592,7 @@
                             if (response.data.image) {
                                 $('#currentBannerImage').attr('src',
                                     window.frontendConfig.url +
-                                    '/dashboard/images/banners/' +
+                                    '/frontend/assets/images/' +
                                     response.data.image);
                             } else {
                                 $('#currentBannerImage').attr('src',
