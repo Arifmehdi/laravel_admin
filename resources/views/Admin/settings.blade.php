@@ -248,7 +248,7 @@
                         <div class="form-group">
                             <label>Current Logo Image</label>
                             <img id="currentBannerImage" src="" class="img-fluid rounded mb-2"
-                                style="max-height: 150px;">
+                                style="max-height: 150px; border:1px solid black">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="logoImagePreview"
                                     name="logoImagePreview" accept="image/*">
@@ -272,7 +272,7 @@
                         <div class="form-group">
                             <label>Current Favicon Image</label>
                             <img id="currentFaviconImage" src="" class="img-fluid rounded mb-2"
-                                style="max-height: 150px;">
+                                style="max-height: 150px; border:1px solid black">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="faviconImagePreview"
                                     name="faviconImagePreview" accept="image/*">
