@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\BannerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\CacheCommandController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DealerController;
 use App\Http\Controllers\Admin\InventoryController;
@@ -101,5 +102,14 @@ Route::prefix('admin')->as('admin.')->group(function () {
             // Route::get('image/get', [SettingsController::class, 'identify'])->name('image.get');
             // Route::post('add', [SettingsController::class, 'update'])->name('update');
         });
+
+        Route::group(['prefix' => 'lead', 'as' => 'lead.'], function () {
+            Route::get('/', [LeadController::class, 'index'])->name('index');
+        });
+
+
+        Route::resource('cache-commands', CacheCommandController::class);
+        Route::get('cache-commands/run/{command}', [CacheCommandController::class, 'runCommand'])->name('cache-commands.run');
+        Route::get('cache-commands/run-all', [CacheCommandController::class, 'runAll'])->name('cache-commands.run-all');
     });
 });

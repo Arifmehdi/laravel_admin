@@ -251,15 +251,15 @@
                         <p>
                             Settings
                             <i class="right fas fa-angle-left"></i>
-                            <span class="badge badge-info right">9</span>
+                            <span class="badge badge-info right">5</span>
                         </p>
                     </a>
                     <ul class="nav nav-treeview"
-                        style="padding-left: 15px; display: {{ in_array(Route::currentRouteName(), ['admin.settings.general']) ? 'block' : 'none' }}">
+                        style="padding-left: 15px; display: {{ in_array(Route::currentRouteName(), ['admin.settings.general', 'admin.cache-commands.index']) ? 'block' : 'none' }}">
 
                         <!-- Research Subsection -->
                         <li
-                            class="nav-item has-treeview {{ in_array(Route::currentRouteName(), ['admin.settings.general']) ? 'menu-open' : '' }}">
+                            class="nav-item has-treeview {{ in_array(Route::currentRouteName(), ['admin.settings.general', 'admin.cache-commands.index']) ? 'menu-open' : '' }}">
                             <a href="#"
                                 class="nav-link {{ in_array(Route::currentRouteName(), ['admin.settings.general']) ? 'active' : '' }}">
                                 <i class="fas fa-cog fa-spin nav-icon"></i>
@@ -269,19 +269,27 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview"
-                                style="padding-left: 25px; display: {{ in_array(Route::currentRouteName(), ['admin.settings.general']) ? 'block' : 'none' }}">
+                                style="padding-left: 25px; display: {{ in_array(Route::currentRouteName(), ['admin.settings.general', 'admin.cache-commands.index']) ? 'block' : 'none' }}">
                                 <li class="nav-item">
                                     <a href="{{ route('admin.settings.general') }}"
-                                        class="nav-link {{ Route::currentRouteName() == 'admin.autoNews' ? 'active' : '' }}">
+                                        class="nav-link {{ Route::currentRouteName() == 'admin.settings.general' ? 'active' : '' }}">
                                         <i class="fas fa-globe nav-icon"></i>
                                         <p>Common</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ route('admin.settings.general') }}"
-                                        class="nav-link {{ Route::currentRouteName() == 'admin.autoNews' ? 'active' : '' }}">
+                                        class="nav-link {{ Route::currentRouteName() == ' ' ? 'active' : '' }}">
                                         <i class="fas fa-tags nav-icon"></i>
                                         <p>Meta Section</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.cache-commands.index') }}"
+                                        class="nav-link {{ Route::currentRouteName() == 'admin.cache-commands.index' ? 'active' : '' }}">
+                                        {{-- <i class="fas fa-tags nav-icon"></i> --}}
+                                                <i class="fas fa-bolt nav-icon"></i>
+                                        <p>Cache Commands</p>
                                     </a>
                                 </li>
                             </ul>
