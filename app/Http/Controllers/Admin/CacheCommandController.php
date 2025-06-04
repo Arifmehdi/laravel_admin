@@ -79,18 +79,33 @@ class CacheCommandController extends Controller
         $caheInsert = new CacheCommand();
         $caheInsert->name = $request->cache_name;
         $caheInsert->command = $request->cache_command;
+        $caheInsert->city = $request->cache_city;
         $caheInsert->state = $request->cache_state;
         // $caheInsert->zip_codes = implode(',', array_map('trim', explode(',', $request->zip_codes)));
-        $zips = array_filter(array_map('trim', explode(',', $request->zip_codes)));
-        $caheInsert->zip_codes = json_encode(array_values($zips));
-        $caheInsert->cache_file = $request->cache_file;
+        // $zips = array_filter(array_map('trim', explode(',', $request->zip_codes)));
+        // $caheInsert->zip_codes = json_encode(array_values($zips));
+
+            if ($request->has('zip_codes')) {
+            $zipInput = $request->zip_codes;
+
+            // Check if input is already JSON
+            if (is_string($zipInput) && is_array(json_decode($zipInput, true))) {
+                $zips = json_decode($zipInput, true);
+            } else {
+                // Process as comma-separated string
+                $zips = array_filter(array_map('trim', explode(',', $zipInput)));
+            }
+
+            // Encode to JSON if we have valid data
+            $caheInsert->zip_codes = !empty($zips) ? json_encode(array_values($zips)) : null;
+        }
+        $caheInsert->cache_file = $request->hide_location;
         $caheInsert->status = $request->status;
         $caheInsert->save();
 
         return response()->json([
             'success' => true,
             'message' => 'Cache command created successfully.',
-            'data' => $caheInsert
         ]);
         // return redirect()->route('cache-commands.index')->with('success', 'Cache command created successfully.');
     }
@@ -107,21 +122,40 @@ class CacheCommandController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required',
-            'command' => 'required|unique:cache_commands,command,' . $id,
-            'state' => 'required',
+            'cache_name' => 'required',
+            'cache_command' => 'required|unique:cache_commands,command,' . $id,
+            'cache_state' => 'required',
             'zip_codes' => 'required',
-            'cache_file' => 'required'
+            'hide_location' => 'required'
         ]);
 
-        $command = CacheCommand::findOrFail($id);
-        $data = $request->all();
-        $data['zip_codes'] = implode(',', array_map('trim', explode(',', $request->zip_codes)));
+        $caheInsert = CacheCommand::find($id);
+        $caheInsert->name = $request->cache_name;
+        $caheInsert->command = $request->cache_command;
+        $caheInsert->state = $request->cache_state;
+        $caheInsert->city = $request->cache_city;
+        if ($request->has('zip_codes')) {
+            $zipInput = $request->zip_codes;
 
-        $command->update($data);
+            // Check if input is already JSON
+            if (is_string($zipInput) && is_array(json_decode($zipInput, true))) {
+                $zips = json_decode($zipInput, true);
+            } else {
+                // Process as comma-separated string
+                $zips = array_filter(array_map('trim', explode(',', $zipInput)));
+            }
 
-        return redirect()->route('cache-commands.index')
-            ->with('success', 'Cache command updated successfully.');
+            // Encode to JSON if we have valid data
+            $caheInsert->zip_codes = !empty($zips) ? json_encode(array_values($zips)) : null;
+        }
+        $caheInsert->cache_file = $request->hide_location;
+        $caheInsert->status = $request->status;
+        $caheInsert->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Cache command updated successfully.',
+        ]);
     }
 
 

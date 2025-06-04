@@ -260,6 +260,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Name <span class="text-danger">*</span></label>
+                                    <input type="hidden" name="cacheId" id="edit_cacheId" class="form-control"
+                                        style="width: 100%;" >
                                     <input type="text" name="cache_name" class="form-control" style="width: 100%;"
                                         required placeholder="Enter State County (e.g. Austin Travis) " id="edit_cache_name">
                                 </div>
@@ -310,7 +312,7 @@
                                         style="width: 100%;" disabled>
                                     <input type="hidden" name="hide_location" id="edit_hide_location" class="form-control"
                                         style="width: 100%;">
-                                    <input type="hidden" name="lastSegment" id="edit_lastSegment" class="form-control"
+                                    <input type="text" name="lastSegment" id="edit_lastSegment" class="form-control"
                                         style="width: 100%;">
                                 </div>
                             </div>
@@ -320,8 +322,7 @@
                                 <label>Status</label>
                                 <div class="form-group clearfix">
                                     <div class="icheck-primary d-inline">
-                                        <input type="radio" id="editRadioPrimary1" name="status" checked
-                                            value="1">
+                                        <input type="radio" id="editRadioPrimary1" name="status" value="1">
                                         <label for="editRadioPrimary1">Active</label>
                                     </div>
                                     <div class="icheck-primary d-inline">
@@ -432,6 +433,9 @@
                     success: function(response) {
                         // Handle success
                         toastr.success('Cache created successfully!');
+                        $('.modal-footer button[type="submit"]').html('Save').prop('disabled',
+                            false);
+                        table.draw(false);
                         $('#cacheCreateModal').modal('hide');
                         // Refresh data table or do whatever you need
                         // location.reload(); // If you want to reload the page
@@ -444,13 +448,12 @@
                         var errorMessage = xhr.responseJSON.message || 'An error occurred';
                         toastr.error(errorMessage);
                     },
-                    complete: function() {
-                        table.draw(false);
-                        // Re-enable button
-                        $('.modal-footer button[type="submit"]').html('Save').prop('disabled',
-                            false);
+                    // complete: function() {
 
-                    }
+                    //     // Re-enable button
+
+
+                    // }
                 });
             });
 
@@ -567,7 +570,7 @@
                     },
                     success: function(response) {
                         if (response.success) {
-                            $('#editBannerId').val(response.data.id);
+                            $('#edit_cacheId').val(response.data.id);
                             $('#edit_cache_name').val(toTitleCase(response.data.name));
                             $('#edit_cache_command').val(response.data.command);
                             $('#edit_hide_cache_command').val(response.data.command);
@@ -577,9 +580,16 @@
                             $('#edit_location').val(response.data.cache_file);
                             $('#edit_hide_location').val(response.data.cache_file);
 
+                                            // Set the correct radio button based on status
+                            if (response.data.status == 1) {
+                                $('#editRadioPrimary1').prop('checked', true);
+                                $('#editRadioPrimary2').prop('checked', false);
+                            } else {
+                                $('#editRadioPrimary1').prop('checked', false);
+                                $('#editRadioPrimary2').prop('checked', true);
+                            }
                             // $('#edit_lastSegment').val(response.data.last_segment);
-
-                            $('#editStatus').prop('checked', response.data.status);
+                            // $('#editStatus').prop('checked', response.data.status);
 
 
 
@@ -635,15 +645,17 @@
                 });
             });
 
-            // Update banner form submission
-            $('#editBannerForm').submit(function(e) {
+            // Update cache form submission
+            $('#editCacheForm').submit(function(e) {
                 e.preventDefault();
                 var formData = new FormData(this);
-                var id = $('#editBannerId').val();
-                formData.set('status', $('#editStatus').is(':checked') ? 1 : 0);
+                var id = $('#edit_cacheId').val();
+                var editUrl = "{{ route('admin.cache-commands.update', ':id') }}".replace(':id', id);
+                    formData.append('_token', '{{ csrf_token() }}');
+                    formData.append('_method', 'PUT');
 
                 $.ajax({
-                    url: '{{ route('admin.banner.update') }}',
+                    url: editUrl,
                     type: 'POST',
                     data: formData,
                     processData: false,
@@ -703,7 +715,7 @@
                                 }
                             },
                             error: function() {
-                                toastr.error('Failed to delete the banner.');
+                                toastr.error('Failed to delete the cache .');
                             }
                         });
                     }
@@ -742,6 +754,29 @@
             $('#lastSegment').val(lastSegment);
             $('#location').val(fullPath);
             $('#hide_location').val(fullPath);
+        });
+
+        $(document).on('keyup', '#edit_cache_name', function() {
+            var cacheName = $(this).val();
+            var command = cacheName.toLowerCase().replace(/\s+/g, '-');
+            let lastSegment = command.split(/[\s-]+/).pop().toLowerCase();
+            var cus_command = 'add-' + command + '-cache';
+
+            $('#edit_cache_command').val(cus_command);
+            $('#edit_hide_cache_command').val(cus_command);
+
+            // var baseUrl = window.location.origin;
+            // var fullPath = baseUrl + "/storage/app/travis_county.json";
+            // alert(fullPath);
+
+            var storagePathPattern = {!! json_encode(str_replace('/', '\\', storage_path('app/'))) !!};
+
+            // var storagePathPattern = "{!! str_replace('/', '\\\\', storage_path('app/')) !!}";
+            var fullPath = storagePathPattern + lastSegment + "_county.json";
+
+            $('#edit_lastSegment').val(lastSegment);
+            $('#edit_location').val(fullPath);
+            $('#edit_hide_location').val(fullPath);
         })
     </script>
 @endpush
