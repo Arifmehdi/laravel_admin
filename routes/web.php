@@ -107,9 +107,12 @@ Route::prefix('admin')->as('admin.')->group(function () {
             Route::get('/', [LeadController::class, 'index'])->name('index');
         });
 
-
         Route::resource('cache-commands', CacheCommandController::class);
-        Route::get('cache-commands/run/{command}', [CacheCommandController::class, 'runCommand'])->name('cache-commands.run');
-        Route::get('cache-commands/run-all', [CacheCommandController::class, 'runAll'])->name('cache-commands.run-all');
+        Route::group(['prefix' => 'cache-commands'], function () {
+            Route::post('/status', [CacheCommandController::class, 'status'])->name('cache-commands.status');
+            Route::get('/run/{command}', [CacheCommandController::class, 'runCommand'])->name('cache-commands.run');
+            Route::get('/run-all', [CacheCommandController::class, 'runAll'])->name('cache-commands.run-all');
+        });
+
     });
 });

@@ -32,7 +32,7 @@
                                 <i class="fas fa-sync-alt mr-1"></i> Regenerate All Cache
                             </a>
                             <a href="" class="float-right btn btn-success btn-sm mr-2" data-toggle="modal"
-                                data-target="#blogssAddModal"> <i class="fas fa-plus-circle"></i> Add New Cache</a>
+                                data-target="#cacheCreateModal"> <i class="fas fa-plus-circle"></i> Add New Cache</a>
 
                             <!-- For links -->
                             <a href="#" class="float-right btn btn-danger btn-sm mr-2" id="deleteAllBtn">
@@ -62,58 +62,6 @@
         </div>
     </section>
 
-    <!-- Create Banner Modal -->
-    <div class="modal fade" id="createBannerModal" tabindex="-1" role="dialog" aria-labelledby="createBannerModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="createBannerModalLabel">Create New Banner</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="createBannerForm" enctype="multipart/form-data">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="name">Banner Name</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="position">Position</label>
-                            <select class="form-control" id="position" name="position" required>
-                                <option value="">Select Position</option>
-                                <option value="top">Top</option>
-                                <option value="middle">Middle</option>
-                                <option value="bottom">Bottom</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="image">Banner Image</label>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="image" name="image"
-                                    accept="image/*" required>
-                                <label class="custom-file-label" for="image">Choose file</label>
-                            </div>
-                            <small class="form-text text-muted">Recommended size: 1920x600 pixels</small>
-                        </div>
-                        <div class="form-group">
-                            <label>Status</label>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="status" name="status" checked>
-                                <label class="custom-control-label" for="status">Active</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save Banner</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
     <!-- View Banner Modal -->
     <div class="modal fade" id="viewBannerModal" tabindex="-1" role="dialog" aria-labelledby="viewBannerModalLabel"
@@ -160,65 +108,6 @@
         </div>
     </div>
 
-    <!-- Edit Banner Modal -->
-    <div class="modal fade" id="editBannerModal" tabindex="-1" role="dialog" aria-labelledby="editBannerModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editBannerModalLabel">Edit Banner</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="editBannerForm" enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
-                    <input type="hidden" id="editBannerId" name="id">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="editName">Banner Name</label>
-                            <input type="text" class="form-control" id="editName" name="name" required>
-                            <input type="hidden" name="old_image" class="form-control" id="oldEditImageInput">
-                        </div>
-                        <div class="form-group">
-                            <input type="hidden" id="hiddenEditPosition" name="position">
-                            <label for="editPosition">Position</label>
-                            <select class="form-control" id="editPosition" name="positionDisabled" disabled>
-                                <option value="">Select Position</option>
-                                {{-- @foreach ($banners as $position => $positionId)
-                                    <option value="{{ $position }}">{{ ucwords($position) }}</option>
-                                @endforeach --}}
-
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Current Image</label>
-                            <img id="currentBannerImage" src="" class="img-fluid rounded mb-2"
-                                style="max-height: 150px;">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="editImage" name="image"
-                                    accept="image/*">
-                                <label class="custom-file-label" for="editImage">Change image (optional)</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Status</label>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="editStatus" name="status">
-                                <label class="custom-control-label" for="editStatus">Active</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Update Banner</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <!-- url Banner Modal -->
     <div class="modal fade" id="linkBannerModal" tabindex="-1" role="dialog" aria-labelledby="linkBannerModalLabel"
         aria-hidden="true">
@@ -250,6 +139,202 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Update Banner URL</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- Create Modal --}}
+    <div class="modal fade" id="cacheCreateModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Create {{ $page_title }}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="createCacheForm" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Name <span class="text-danger">*</span></label>
+                                    <input type="text" name="cache_name" class="form-control" style="width: 100%;"
+                                        required placeholder="Enter State County (e.g. Austin Travis) " id="cache_name">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Command</label>
+                                    <input type="text" name="hide_cache_command" id="cache_command"
+                                        class="form-control" style="width: 100%;" placeholder="add-austin-travis-cache"
+                                        disabled>
+
+                                    <input type="hidden" name="cache_command" id="hide_cache_command"
+                                        class="form-control" style="width: 100%;" placeholder="add-austin-travis-cache">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>City</label>
+                                    <input type="text" name="cache_city" id="cache_city" class="form-control"
+                                        style="width: 100%;">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>State (Short Name) <span class="text-danger">*</span></label>
+                                    <input type="text" name="cache_state" id="cache_state" class="form-control"
+                                        style="width: 100%;" maxlength="2" pattern="[A-Za-z]{2}"
+                                        oninput="this.value = this.value.toUpperCase()">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Zip Codes <span class="text-danger">*</span></label>
+                                    <textarea name="zip_codes" class="form-control summernote" style="width: 100%;" cols="30" rows="5"
+                                        required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>File Location</label>
+                                    <input type="text" name="location" id="location" class="form-control"
+                                        style="width: 100%;" disabled>
+                                    <input type="hidden" name="hide_location" id="hide_location" class="form-control"
+                                        style="width: 100%;">
+                                    <input type="hidden" name="lastSegment" id="lastSegment" class="form-control"
+                                        style="width: 100%;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Status</label>
+                                <div class="form-group clearfix">
+                                    <div class="icheck-primary d-inline">
+                                        <input type="radio" id="createRadioPrimary1" name="status" checked
+                                            value="1">
+                                        <label for="createRadioPrimary1">Active</label>
+                                    </div>
+                                    <div class="icheck-primary d-inline">
+                                        <input type="radio" id="createRadioPrimary2" name="status" value="0">
+                                        <label for="createRadioPrimary2">Inactive</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- Edit Modal --}}
+    <div class="modal fade" id="editCacheModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit {{ $page_title }}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="editCacheForm" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Name <span class="text-danger">*</span></label>
+                                    <input type="text" name="cache_name" class="form-control" style="width: 100%;"
+                                        required placeholder="Enter State County (e.g. Austin Travis) " id="edit_cache_name">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Command</label>
+                                    <input type="text" name="hide_cache_command" id="edit_cache_command"
+                                        class="form-control" style="width: 100%;" placeholder="add-austin-travis-cache"
+                                        disabled>
+
+                                    <input type="text" name="cache_command" id="edit_hide_cache_command"
+                                        class="form-control" style="width: 100%;" placeholder="add-austin-travis-cache">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>City</label>
+                                    <input type="text" name="cache_city" id="edit_cache_city" class="form-control"
+                                        style="width: 100%;">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>State (Short Name) <span class="text-danger">*</span></label>
+                                    <input type="text" name="cache_state" id="edit_cache_state" class="form-control"
+                                        style="width: 100%;" maxlength="2" pattern="[A-Za-z]{2}"
+                                        oninput="this.value = this.value.toUpperCase()">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Zip Codes <span class="text-danger">*</span></label>
+                                    <textarea name="zip_codes" id="edit_zip_codes" class="form-control summernote" style="width: 100%;" cols="30" rows="5"
+                                        required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>File Location</label>
+                                    <input type="text" name="location" id="edit_location" class="form-control"
+                                        style="width: 100%;" disabled>
+                                    <input type="hidden" name="hide_location" id="edit_hide_location" class="form-control"
+                                        style="width: 100%;">
+                                    <input type="hidden" name="lastSegment" id="edit_lastSegment" class="form-control"
+                                        style="width: 100%;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Status</label>
+                                <div class="form-group clearfix">
+                                    <div class="icheck-primary d-inline">
+                                        <input type="radio" id="editRadioPrimary1" name="status" checked
+                                            value="1">
+                                        <label for="editRadioPrimary1">Active</label>
+                                    </div>
+                                    <div class="icheck-primary d-inline">
+                                        <input type="radio" id="editRadioPrimary2" name="status" value="0">
+                                        <label for="editRadioPrimary2">Inactive</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                 </form>
             </div>
@@ -298,32 +383,12 @@
                     {
                         data: 'status',
                         name: 'status',
-                        // render: function(data) {
-                        //     return data ?
-                        //         '<span class="badge bg-success">Active</span>' :
-                        //         '<span class="badge bg-danger">Inactive</span>';
-                        // }
                     },
                     {
                         data: 'action',
                         name: 'action',
                         orderable: false,
                         searchable: false,
-                        //     render: function(data, type, row) {
-                        //         return `
-                    //     <div class="btn-group">
-                    //         <button class="btn btn-info btn-sm view-btn" data-id="${row.id}" title="View">
-                    //             <i class="fas fa-eye"></i>
-                    //         </button>
-                    //         <button class="btn btn-primary btn-sm edit-btn" data-id="${row.id}" title="Edit">
-                    //             <i class="fas fa-edit"></i>
-                    //         </button>
-                    //         <button class="btn btn-danger btn-sm delete-btn" data-id="${row.id}" title="Delete">
-                    //             <i class="fas fa-trash"></i>
-                    //         </button>
-                    //     </div>
-                    // `;
-                        //     }
                     }
                 ],
                 dom: 'Bfrtip',
@@ -343,37 +408,48 @@
                 $(this).next('.custom-file-label').addClass("selected").html(fileName);
             });
 
-            // Create banner form submission
-            $('#createBannerForm').submit(function(e) {
-                e.preventDefault();
-                var formData = new FormData(this);
+            // Create cache form submission
+            $('#createCacheForm').on('submit', function(e) {
+                e.preventDefault(); // Prevent the default form submission
 
+                // Get the form data
+                var formData = new FormData(this);
+                var url = "{{ route('admin.cache-commands.store') }}";
+                // You can also manually append data if needed
+                // formData.append('key', 'value');
+
+                // Show loading state if needed
+                $('.modal-footer button[type="submit"]').html(
+                    '<i class="fa fa-spinner fa-spin"></i> Saving...').prop('disabled', true);
+
+                // AJAX request
                 $.ajax({
-                    url: '{{ route('admin.banner.store') }}',
+                    url: url, // Replace with your actual endpoint
                     type: 'POST',
                     data: formData,
-                    processData: false,
-                    contentType: false,
+                    processData: false, // Important for FormData
+                    contentType: false, // Important for FormData
                     success: function(response) {
-                        if (response.success) {
-                            toastr.success(response.message);
-                            $('#createBannerModal').modal('hide');
-                            table.draw();
-                            $('#createBannerForm')[0].reset();
-                            $('.custom-file-label').html('Choose file');
-                        } else {
-                            toastr.error(response.message);
-                        }
+                        // Handle success
+                        toastr.success('Cache created successfully!');
+                        $('#cacheCreateModal').modal('hide');
+                        // Refresh data table or do whatever you need
+                        // location.reload(); // If you want to reload the page
+
+                        // Reset the form
+                        $('#createBlogForm')[0].reset();
                     },
-                    error: function(xhr) {
-                        if (xhr.status === 422) {
-                            var errors = xhr.responseJSON.errors;
-                            $.each(errors, function(key, value) {
-                                toastr.error(value[0]);
-                            });
-                        } else {
-                            toastr.error('An error occurred while creating the banner.');
-                        }
+                    error: function(xhr, status, error) {
+                        // Handle error
+                        var errorMessage = xhr.responseJSON.message || 'An error occurred';
+                        toastr.error(errorMessage);
+                    },
+                    complete: function() {
+                        table.draw(false);
+                        // Re-enable button
+                        $('.modal-footer button[type="submit"]').html('Save').prop('disabled',
+                            false);
+
                     }
                 });
             });
@@ -479,12 +555,12 @@
                 });
             });
 
-            // Edit banner - load data
+            // Edit cached - load data
             $(document).on('click', '.edit-btn', function() {
                 var id = $(this).data('id');
 
                 $.ajax({
-                    url: '{{ route('admin.banner.edit') }}',
+                    url: '/admin/cache-commands/' + id + '/edit',
                     type: 'GET',
                     data: {
                         id: id
@@ -492,29 +568,28 @@
                     success: function(response) {
                         if (response.success) {
                             $('#editBannerId').val(response.data.id);
-                            $('#editName').val(toTitleCase(response.data.name));
-                            $('#editPosition').val(response.data.position);
-                            $('#hiddenEditPosition').val(response.data.position);
-                            $('#oldEditImageInput').val(response.data.image);
+                            $('#edit_cache_name').val(toTitleCase(response.data.name));
+                            $('#edit_cache_command').val(response.data.command);
+                            $('#edit_hide_cache_command').val(response.data.command);
+                            $('#edit_cache_city').val(response.data.city);
+                            $('#edit_cache_state').val(response.data.state);
+                            $('#edit_zip_codes').val(response.data.zip_codes);
+                            $('#edit_location').val(response.data.cache_file);
+                            $('#edit_hide_location').val(response.data.cache_file);
+
+                            // $('#edit_lastSegment').val(response.data.last_segment);
+
                             $('#editStatus').prop('checked', response.data.status);
 
-                            if (response.data.image) {
-                                $('#currentBannerImage').attr('src',
-                                    window.frontendConfig.url +
-                                    '/dashboard/images/banners/' +
-                                    response.data.image);
-                            } else {
-                                $('#currentBannerImage').attr('src',
-                                    'https://via.placeholder.com/800x300?text=No+Image');
-                            }
 
-                            $('#editBannerModal').modal('show');
+
+                            $('#editCacheModal').modal('show');
                         } else {
                             toastr.error(response.message);
                         }
                     },
                     error: function() {
-                        toastr.error('Failed to load banner data for editing.');
+                        toastr.error('Failed to load cache data for editing.');
                     }
                 });
             });
@@ -537,7 +612,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: '{{ route('admin.banner.status') }}',
+                            url: '{{ route('admin.cache-commands.status') }}',
                             type: 'POST',
                             data: {
                                 id: id,
@@ -576,7 +651,7 @@
                     success: function(response) {
                         if (response.success) {
                             toastr.success(response.message);
-                            $('#editBannerModal').modal('hide');
+                            $('#editCacheModal').modal('hide');
                             table.draw();
                         } else {
                             toastr.error(response.message);
@@ -600,6 +675,7 @@
             // Delete banner
             $(document).on('click', '.delete-btn', function() {
                 var id = $(this).data('id');
+                var deleteUrl = "{{ route('admin.cache-commands.destroy', ':id') }}".replace(':id', id);
 
                 Swal.fire({
                     title: 'Are you sure?',
@@ -612,7 +688,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: '{{ route('admin.banner.destroy') }}',
+                            url: deleteUrl,
                             type: 'DELETE',
                             data: {
                                 id: id,
@@ -642,5 +718,30 @@
                 return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
             });
         }
+    </script>
+
+    <script>
+        $(document).on('keyup', '#cache_name', function() {
+            var cacheName = $(this).val();
+            var command = cacheName.toLowerCase().replace(/\s+/g, '-');
+            let lastSegment = command.split(/[\s-]+/).pop().toLowerCase();
+            var cus_command = 'add-' + command + '-cache';
+
+            $('#cache_command').val(cus_command);
+            $('#hide_cache_command').val(cus_command);
+
+            // var baseUrl = window.location.origin;
+            // var fullPath = baseUrl + "/storage/app/travis_county.json";
+            // alert(fullPath);
+
+            var storagePathPattern = {!! json_encode(str_replace('/', '\\', storage_path('app/'))) !!};
+
+            // var storagePathPattern = "{!! str_replace('/', '\\\\', storage_path('app/')) !!}";
+            var fullPath = storagePathPattern + lastSegment + "_county.json";
+
+            $('#lastSegment').val(lastSegment);
+            $('#location').val(fullPath);
+            $('#hide_location').val(fullPath);
+        })
     </script>
 @endpush

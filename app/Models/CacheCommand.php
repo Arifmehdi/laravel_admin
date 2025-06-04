@@ -11,7 +11,7 @@ class CacheCommand extends Model
         'command',
         'city',
         'state',
-        'description',
+        'zip_codes',
         'cache_file',
         'status'
     ];
