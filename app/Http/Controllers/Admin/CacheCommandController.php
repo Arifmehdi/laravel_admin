@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\CacheCommand;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class CacheCommandController extends Controller
 {
@@ -17,7 +19,7 @@ class CacheCommandController extends Controller
     {
         $page_title = 'Cache Command';
         if ($request->ajax()) {
-            $data = CacheCommand::orderBy('id','desc');
+            $data = CacheCommand::orderBy('id', 'desc');
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -29,7 +31,7 @@ class CacheCommandController extends Controller
                     $btnIcon = $row->status ? 'fa-check-circle' : 'fa-times-circle';
 
                     $btn = '<div class="btn-group" role="group">';
-                    $btn .= '<button class="btn btn-secondary btn-sm link-btn mr-1" data-id="' . $row->id . '" title="Generate">
+                    $btn .= '<button class="btn btn-secondary btn-sm  mr-1 run-command" data-id="' . $row->id . '" title="Generate">
                                 <i class="fas fa-sync-alt"></i>
                             </button>';
                     // $btn .= '<button class="btn btn-info btn-sm view-btn mr-1" data-id="' . $row->id . '" title="View">
@@ -41,7 +43,7 @@ class CacheCommandController extends Controller
                     $btn .= '<button class="btn ' . $btnClass . ' btn-sm status-toggle mr-1" data-id="' . $row->id . '" data-status="' . $row->status . '" title="Status">
                                 <i class="fas ' . $btnIcon . '"></i>
                             </button>';
-                    $btn .= '<button class="btn btn-danger btn-sm delete-btn mr-1" data-id="' . $row->id . '" title="Delete">
+                    $btn .= '<button class="btn btn-danger btn-sm delete-cache  mr-1" data-id="' . $row->id . '" title="Delete">
                                 <i class="fas fa-trash"></i>
                             </button>';
                     $btn .= '</div>';
@@ -85,7 +87,7 @@ class CacheCommandController extends Controller
         // $zips = array_filter(array_map('trim', explode(',', $request->zip_codes)));
         // $caheInsert->zip_codes = json_encode(array_values($zips));
 
-            if ($request->has('zip_codes')) {
+        if ($request->has('zip_codes')) {
             $zipInput = $request->zip_codes;
 
             // Check if input is already JSON
@@ -211,5 +213,85 @@ class CacheCommandController extends Controller
             'success' => true,
             'output' => $output
         ]);
+    }
+
+    public function deleteAll()
+    {
+        $response = Http::delete('https://bestdreamcar.com//api/cache-commands/delete-all', [
+            // Optional: Add any required data here
+        ]);
+
+        if ($response->successful()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Cache regenerated successfully!',
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to regenerate cache: ' . $response->body(),
+            ], 500);
+        }
+    }
+
+
+
+    public function runSingle($id)
+    {
+
+        $response = Http::post("https://bestdreamcar.com//api/cache-commands/{$id}/run", [
+            // Optional: Add any required data here
+        ]);
+
+        if ($response->successful()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Cache regenerated successfully!',
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to regenerate cache: ' . $response->body(),
+            ], 500);
+        }
+    }
+
+    public function runAll()
+    {
+
+        $response = Http::post('https://bestdreamcar.com//api/cache-commands/run-all', [
+            // Optional: Add any required data here
+        ]);
+
+        if ($response->successful()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Cache regenerated successfully!',
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to regenerate cache: ' . $response->body(),
+            ], 500);
+        }
+    }
+
+    public function deleteCache($id)
+    {
+        $response = Http::post("https://bestdreamcar.com/api/cache-commands/{$id}/delete-cache", [
+            // Optional: Add any required data here
+        ]);
+
+        if ($response->successful()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Cache deleted successfully!',
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to regenerate cache: ' . $response->body(),
+            ], 500);
+        }
     }
 }

@@ -28,16 +28,17 @@
                                 data-target="#createBannerModal">
                                 <i class="fas fa-plus"></i> Add New Banner
                             </button> --}}
+                            <a href="" class="float-right btn btn-success btn-sm mr-2" data-toggle="modal"
+                                data-target="#cacheCreateModal"> <i class="fas fa-plus-circle"></i> Add New Cache</a>
                             <a href="#" class="float-right btn btn-primary btn-sm mr-2" id="runAllBtn">
                                 <i class="fas fa-sync-alt mr-1"></i> Regenerate All Cache
                             </a>
-                            <a href="" class="float-right btn btn-success btn-sm mr-2" data-toggle="modal"
-                                data-target="#cacheCreateModal"> <i class="fas fa-plus-circle"></i> Add New Cache</a>
 
                             <!-- For links -->
                             <a href="#" class="float-right btn btn-danger btn-sm mr-2" id="deleteAllBtn">
                                 <i class="fas fa-trash-alt mr-1"></i> Clear All Cache
                             </a>
+
 
                         </div>
                         <div class="card-body">
@@ -261,9 +262,10 @@
                                 <div class="form-group">
                                     <label>Name <span class="text-danger">*</span></label>
                                     <input type="hidden" name="cacheId" id="edit_cacheId" class="form-control"
-                                        style="width: 100%;" >
+                                        style="width: 100%;">
                                     <input type="text" name="cache_name" class="form-control" style="width: 100%;"
-                                        required placeholder="Enter State County (e.g. Austin Travis) " id="edit_cache_name">
+                                        required placeholder="Enter State County (e.g. Austin Travis) "
+                                        id="edit_cache_name">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -299,8 +301,8 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Zip Codes <span class="text-danger">*</span></label>
-                                    <textarea name="zip_codes" id="edit_zip_codes" class="form-control summernote" style="width: 100%;" cols="30" rows="5"
-                                        required></textarea>
+                                    <textarea name="zip_codes" id="edit_zip_codes" class="form-control summernote" style="width: 100%;" cols="30"
+                                        rows="5" required></textarea>
                                 </div>
                             </div>
                         </div>
@@ -310,8 +312,8 @@
                                     <label>File Location</label>
                                     <input type="text" name="location" id="edit_location" class="form-control"
                                         style="width: 100%;" disabled>
-                                    <input type="hidden" name="hide_location" id="edit_hide_location" class="form-control"
-                                        style="width: 100%;">
+                                    <input type="hidden" name="hide_location" id="edit_hide_location"
+                                        class="form-control" style="width: 100%;">
                                     <input type="text" name="lastSegment" id="edit_lastSegment" class="form-control"
                                         style="width: 100%;">
                                 </div>
@@ -497,67 +499,6 @@
                 });
             });
 
-            // link banner - load data
-            $(document).on('click', '.link-btn', function() {
-                var id = $(this).data('id');
-                $.ajax({
-                    url: '{{ route('admin.banner.link') }}',
-                    type: 'GET',
-                    data: {
-                        id: id
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $('#linkBannerId').val(response.data.id);
-                            $('#editUrl').val(response.data.url);
-                            $('#linkNewWindow').prop('checked', response.data.new_window);
-
-                            $('#linkBannerModal').modal('show');
-                        } else {
-                            toastr.error(response.message);
-                        }
-                    },
-                    error: function() {
-                        toastr.error('Failed to load banner data for editing.');
-                    }
-                });
-            });
-
-            // link banner form submission
-            $('#linkBannerForm').submit(function(e) {
-                e.preventDefault();
-                var formData = new FormData(this);
-                var id = $('#linkBannerId').val();
-                formData.set('status', $('#linkNewWindow').is(':checked') ? 1 : 0);
-
-                $.ajax({
-                    url: '{{ route('admin.banner.link.update') }}',
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        if (response.success) {
-                            toastr.success(response.message);
-                            $('#linkBannerModal').modal('hide');
-                            table.draw();
-                        } else {
-                            toastr.error(response.message);
-                        }
-                    },
-                    error: function(xhr) {
-                        if (xhr.status === 422) {
-                            var errors = xhr.responseJSON.errors;
-                            $.each(errors, function(key, value) {
-                                toastr.error(value[0]);
-                            });
-                        } else {
-                            toastr.error('An error occurred while updating the URL.');
-                        }
-                    }
-                });
-            });
-
             // Edit cached - load data
             $(document).on('click', '.edit-btn', function() {
                 var id = $(this).data('id');
@@ -580,7 +521,7 @@
                             $('#edit_location').val(response.data.cache_file);
                             $('#edit_hide_location').val(response.data.cache_file);
 
-                                            // Set the correct radio button based on status
+                            // Set the correct radio button based on status
                             if (response.data.status == 1) {
                                 $('#editRadioPrimary1').prop('checked', true);
                                 $('#editRadioPrimary2').prop('checked', false);
@@ -651,8 +592,8 @@
                 var formData = new FormData(this);
                 var id = $('#edit_cacheId').val();
                 var editUrl = "{{ route('admin.cache-commands.update', ':id') }}".replace(':id', id);
-                    formData.append('_token', '{{ csrf_token() }}');
-                    formData.append('_method', 'PUT');
+                formData.append('_token', '{{ csrf_token() }}');
+                formData.append('_method', 'PUT');
 
                 $.ajax({
                     url: editUrl,
@@ -721,6 +662,149 @@
                     }
                 });
             });
+        });
+
+        // Delete All Cache Commands
+        $(document).on('click', '.delete-cache', function() {
+            var button = $(this); // Store button reference
+            var id = button.data('id');
+            var url = '{{ route('admin.api.cache-commands.delete-cache', ['id' => ':id']) }}'.replace(':id', id);
+            var originalHtml = button.html(); // Store original button content
+
+            if (confirm('Are you sure you want to delete this cache?')) {
+                // Add loading state
+                button.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Deleting...');
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+                            $('#data-table').DataTable().draw(false);
+                        } else {
+                            toastr.error(response.message || 'Failed to delete cache');
+                        }
+                    },
+                    error: function(xhr) {
+                        toastr.error('Error: ' + (xhr.responseJSON?.message ||
+                            'Failed to delete cache'));
+                    },
+                    complete: function() {
+                        // Restore original button state
+                        button.prop('disabled', false).html(originalHtml);
+                    }
+                });
+            }
+        });
+
+        // Run all commands
+        $('#runAllBtn').click(function(e) {
+            e.preventDefault(); // Prevent default button behavior
+
+            if (confirm('Are you sure you want to run all cache commands?')) {
+                // Store original button HTML
+                var originalHtml = $(this).html();
+
+                // Add loading state
+                $(this).html('<i class="fas fa-spinner fa-spin"></i> Processing...');
+                $(this).prop('disabled', true);
+
+                $.post('{{ route('admin.cache-commands.run-all') }}', {
+                        _token: '{{ csrf_token() }}'
+                    }, function(response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+                            $('#data-table').DataTable().draw(false);
+                        }
+                    })
+                    .always(function() {
+                        // Restore original button state whether success or fail
+                        $('#runAllBtn').html(originalHtml);
+                        $('#runAllBtn').prop('disabled', false);
+                    })
+                    .fail(function(xhr) {
+                        // Handle errors if needed
+                        toastr.error(xhr.responseJSON.message || 'An error occurred');
+                    });
+            }
+        });
+
+
+
+        $(document).on('click', '.run-command', function() {
+            var button = $(this); // Store button reference
+            var id = button.data('id');
+            var url = '{{ route('admin.api.cache-commands.run', ['id' => ':id']) }}'.replace(':id', id);
+            var originalHtml = button.html(); // Store original HTML
+
+            if (confirm('Are you sure you want to run this command?')) {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    beforeSend: function() {
+                        // Show loading indicator using stored button reference
+                        button.prop('disabled', true).html(
+                            '<i class="fas fa-spinner fa-spin"></i> Running...');
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+                            $('#data-table').DataTable().draw(false);
+                        } else {
+                            toastr.error(response.message || 'Command execution failed');
+                        }
+                    },
+                    error: function(xhr) {
+                        toastr.error('Error: ' + (xhr.responseJSON?.message ||
+                            'Command execution failed'));
+                    },
+                    complete: function() {
+                        // Re-enable button using stored button reference
+                        button.prop('disabled', false).html(originalHtml);
+                    }
+                });
+            }
+        });
+
+        // Delete All Cache Commands
+        $('#deleteAllBtn').click(function(e) {
+            e.preventDefault(); // Prevent default behavior
+
+            if (confirm('Are you sure you want to delete all cache commands?')) {
+                // Store original button HTML
+                var originalHtml = $(this).html();
+
+                // Add loading state
+                $(this).html('<i class="fas fa-spinner fa-spin"></i> Deleting...');
+                $(this).prop('disabled', true);
+
+                $.post('{{ route('admin.cache-commands.delete-all') }}', {
+                        _token: '{{ csrf_token() }}'
+                    }, function(response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+                            $('#data-table').DataTable().draw(false);
+                        } else {
+                            toastr.error(response.message || 'Failed to delete cache commands');
+                        }
+                    })
+                    .always(function() {
+                        // Restore original button state
+                        $('#deleteAllBtn').html(originalHtml);
+                        $('#deleteAllBtn').prop('disabled', false);
+                    })
+                    .fail(function(xhr) {
+                        toastr.error(xhr.responseJSON?.message ||
+                            'An error occurred while deleting cache commands');
+                    });
+            }
         });
     </script>
 

@@ -108,11 +108,21 @@ Route::prefix('admin')->as('admin.')->group(function () {
         });
 
         Route::resource('cache-commands', CacheCommandController::class);
-        Route::group(['prefix' => 'cache-commands'], function () {
-            Route::post('/status', [CacheCommandController::class, 'status'])->name('cache-commands.status');
-            Route::get('/run/{command}', [CacheCommandController::class, 'runCommand'])->name('cache-commands.run');
-            Route::get('/run-all', [CacheCommandController::class, 'runAll'])->name('cache-commands.run-all');
+        Route::post('cache-commands/run/{id}', [CacheCommandController::class, 'runSingle'])->name('api.cache-commands.run');
+        Route::post('cache-commands/{id}/delete-cache', [CacheCommandController::class, 'deleteCache'])->name('api.cache-commands.delete-cache');
+
+        Route::group(['prefix' => 'cache-commands', 'as' => 'cache-commands.'], function () {
+            Route::post('/status', [CacheCommandController::class, 'status'])->name('status');
+            Route::get('/run/{command}', [CacheCommandController::class, 'runCommand'])->name('run');
+            Route::post('/run-all', [CacheCommandController::class, 'runAll'])->name('run-all');
+            Route::post('/delete-all', [CacheCommandController::class, 'deleteAll'])->name('delete-all');
         });
 
     });
 });
+
+
+
+    // Route::post('cache-commands/run-all', [CacheCommandController::class, 'runAll'])->name('cache-commands.run-all');
+    // Route::post('cache-commands/{id}/delete-cache', [CacheCommandController::class, 'deleteCache'])->name('cache-commands.delete-cache');
+    // Route::get('cache-commands/show', [CacheCommandController::class, 'singleCacheCommands'])->name('single.cache.view');
