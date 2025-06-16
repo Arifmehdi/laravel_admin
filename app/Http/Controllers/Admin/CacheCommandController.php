@@ -269,7 +269,7 @@ class CacheCommandController extends Controller
         //     // Optional: Add any required data here
         // ]);
 
-        $response = Http::timeout(120) // 60 seconds timeout
+        $response = Http::timeout(300) // 60 seconds timeout
             ->post($this->frontendUrl . '/api/cache-commands/run-all', [
                 // Optional: Add any required data here
             ]);
