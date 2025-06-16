@@ -186,12 +186,12 @@
                                 <label>Status</label>
                                 <div class="form-group clearfix">
                                     <div class="icheck-primary d-inline">
-                                        <input type="radio" id="createRadioPrimary1" name="status" checked
+                                        <input type="radio" id="createRadioPrimary1" name="status"
                                             value="1">
                                         <label for="createRadioPrimary1">Active</label>
                                     </div>
                                     <div class="icheck-primary d-inline">
-                                        <input type="radio" id="createRadioPrimary2" name="status" value="0">
+                                        <input type="radio" id="createRadioPrimary2" name="status" value="0" checked>
                                         <label for="createRadioPrimary2">Inactive</label>
                                     </div>
                                 </div>
