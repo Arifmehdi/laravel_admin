@@ -223,7 +223,7 @@ class CacheCommandController extends Controller
 
     public function deleteAll()
     {
-        $response = Http::delete($this->frontendUrl.'/api/cache-commands/delete-all', [
+        $response = Http::delete($this->frontendUrl . '/api/cache-commands/delete-all', [
             // Optional: Add any required data here
         ]);
 
@@ -245,7 +245,7 @@ class CacheCommandController extends Controller
     public function runSingle($id)
     {
 
-        $response = Http::post($this->frontendUrl."/api/cache-commands/{$id}/run", [
+        $response = Http::post($this->frontendUrl . "/api/cache-commands/{$id}/run", [
             // Optional: Add any required data here
         ]);
 
@@ -264,9 +264,15 @@ class CacheCommandController extends Controller
 
     public function runAll()
     {
-        $response = Http::post($this->frontendUrl. '/api/cache-commands/run-all', [
-            // Optional: Add any required data here
-        ]);
+
+        // $response = Http::post($this->frontendUrl . '/api/cache-commands/run-all', [
+        //     // Optional: Add any required data here
+        // ]);
+
+        $response = Http::timeout(120) // 60 seconds timeout
+            ->post($this->frontendUrl . '/api/cache-commands/run-all', [
+                // Optional: Add any required data here
+            ]);
 
         if ($response->successful()) {
             return response()->json([
@@ -283,7 +289,7 @@ class CacheCommandController extends Controller
 
     public function deleteCache($id)
     {
-        $response = Http::post($this->frontendUrl."/api/cache-commands/{$id}/delete-cache", [
+        $response = Http::post($this->frontendUrl . "/api/cache-commands/{$id}/delete-cache", [
             // Optional: Add any required data here
         ]);
 
