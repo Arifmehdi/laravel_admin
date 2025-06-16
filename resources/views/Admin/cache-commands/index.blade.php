@@ -109,43 +109,6 @@
         </div>
     </div>
 
-    <!-- url Banner Modal -->
-    <div class="modal fade" id="linkBannerModal" tabindex="-1" role="dialog" aria-labelledby="linkBannerModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="linkBannerModalLabel">Edit Banner URL</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="linkBannerForm" enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
-                    <input type="hidden" id="linkBannerId" name="id">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="editName">URL</label>
-                            <input type="text" class="form-control" id="editUrl" name="editUrl" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Open in New Window</label>
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="linkNewWindow" name="NewWindow">
-                                <label class="custom-control-label" for="linkNewWindow">Active</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Update Banner URL</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
     {{-- Create Modal --}}
     <div class="modal fade" id="cacheCreateModal">
         <div class="modal-dialog modal-lg">
@@ -443,7 +406,7 @@
                         // location.reload(); // If you want to reload the page
 
                         // Reset the form
-                        $('#createBlogForm')[0].reset();
+                        $('#createCacheForm')[0].reset();
                     },
                     error: function(xhr, status, error) {
                         // Handle error
@@ -520,6 +483,7 @@
                             $('#edit_zip_codes').val(response.data.zip_codes);
                             $('#edit_location').val(response.data.cache_file);
                             $('#edit_hide_location').val(response.data.cache_file);
+                            $('#edit_lastSegment').val(response.data.county);
 
                             // Set the correct radio button based on status
                             if (response.data.status == 1) {
@@ -622,53 +586,13 @@
                     }
                 });
             });
-
-
-
-            // Delete banner
-            $(document).on('click', '.delete-btn', function() {
-                var id = $(this).data('id');
-                var deleteUrl = "{{ route('admin.cache-commands.destroy', ':id') }}".replace(':id', id);
-
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: deleteUrl,
-                            type: 'DELETE',
-                            data: {
-                                id: id,
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function(response) {
-                                if (response.success) {
-                                    toastr.success(response.message);
-                                    table.draw();
-                                } else {
-                                    toastr.error(response.message);
-                                }
-                            },
-                            error: function() {
-                                toastr.error('Failed to delete the cache .');
-                            }
-                        });
-                    }
-                });
-            });
         });
 
         // Delete All Cache Commands
         $(document).on('click', '.delete-cache', function() {
             var button = $(this); // Store button reference
             var id = button.data('id');
-            var url = '{{ route('admin.api.cache-commands.delete-cache', ['id' => ':id']) }}'.replace(':id', id);
+            var url = '{{ route('admin.cache-commands.delete', ':id') }}'.replace(':id', id);
             var originalHtml = button.html(); // Store original button content
 
             if (confirm('Are you sure you want to delete this cache?')) {
@@ -679,7 +603,8 @@
                     url: url,
                     type: 'POST',
                     data: {
-                        _token: '{{ csrf_token() }}'
+                        _token: '{{ csrf_token() }}',
+                        _method: 'DELETE' // This tells Laravel to treat it as DELETE
                     },
                     success: function(response) {
                         if (response.success) {

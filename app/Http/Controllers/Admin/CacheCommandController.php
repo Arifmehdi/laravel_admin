@@ -83,12 +83,12 @@ class CacheCommandController extends Controller
             'zip_codes' => 'required',
         ]);
 
-
         $caheInsert = new CacheCommand();
         $caheInsert->name = $request->cache_name;
         $caheInsert->command = $request->cache_command;
         $caheInsert->city = $request->cache_city;
         $caheInsert->state = $request->cache_state;
+        $caheInsert->county = $request->lastSegment;
         // $caheInsert->zip_codes = implode(',', array_map('trim', explode(',', $request->zip_codes)));
         // $zips = array_filter(array_map('trim', explode(',', $request->zip_codes)));
         // $caheInsert->zip_codes = json_encode(array_values($zips));
@@ -136,12 +136,13 @@ class CacheCommandController extends Controller
             'zip_codes' => 'required',
             'hide_location' => 'required'
         ]);
-
+;
         $caheInsert = CacheCommand::find($id);
         $caheInsert->name = $request->cache_name;
         $caheInsert->command = $request->cache_command;
         $caheInsert->state = $request->cache_state;
         $caheInsert->city = $request->cache_city;
+        $caheInsert->county = $request->lastSegment;
         if ($request->has('zip_codes')) {
             $zipInput = $request->zip_codes;
 
@@ -269,7 +270,7 @@ class CacheCommandController extends Controller
         //     // Optional: Add any required data here
         // ]);
 
-        $response = Http::timeout(300) // 60 seconds timeout
+        $response = Http::timeout(600) // 60 seconds timeout
             ->post($this->frontendUrl . '/api/cache-commands/run-all', [
                 // Optional: Add any required data here
             ]);

@@ -112,6 +112,7 @@ Route::prefix('admin')->as('admin.')->group(function () {
         Route::post('cache-commands/{id}/delete-cache', [CacheCommandController::class, 'deleteCache'])->name('api.cache-commands.delete-cache');
 
         Route::group(['prefix' => 'cache-commands', 'as' => 'cache-commands.'], function () {
+            Route::delete('/delete/{id}', [CacheCommandController::class, 'destroy'])->name('delete');
             Route::post('/status', [CacheCommandController::class, 'status'])->name('status');
             Route::get('/run/{command}', [CacheCommandController::class, 'runCommand'])->name('run');
             Route::post('/run-all', [CacheCommandController::class, 'runAll'])->name('run-all');
