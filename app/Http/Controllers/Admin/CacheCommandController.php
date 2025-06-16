@@ -217,7 +217,7 @@ class CacheCommandController extends Controller
 
     public function deleteAll()
     {
-        $response = Http::delete('https://bestdreamcar.com//api/cache-commands/delete-all', [
+        $response = Http::delete('https://bestdreamcar.com/api/cache-commands/delete-all', [
             // Optional: Add any required data here
         ]);
 
@@ -239,7 +239,7 @@ class CacheCommandController extends Controller
     public function runSingle($id)
     {
 
-        $response = Http::post("https://bestdreamcar.com//api/cache-commands/{$id}/run", [
+        $response = Http::post("https://bestdreamcar.com/api/cache-commands/{$id}/run", [
             // Optional: Add any required data here
         ]);
 
@@ -259,7 +259,7 @@ class CacheCommandController extends Controller
     public function runAll()
     {
 
-        $response = Http::post('https://bestdreamcar.com//api/cache-commands/run-all', [
+        $response = Http::post('https://bestdreamcar.com/api/cache-commands/run-all', [
             // Optional: Add any required data here
         ]);
 
