@@ -12,6 +12,7 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class CacheCommandController extends Controller
 {
@@ -75,7 +76,6 @@ class CacheCommandController extends Controller
 
     public function store(Request $request)
     {
-
         $request->validate([
             'cache_name' => 'required',
             'cache_command' => 'required|unique:cache_commands,command',
@@ -89,33 +89,35 @@ class CacheCommandController extends Controller
         $caheInsert->city = $request->cache_city;
         $caheInsert->state = $request->cache_state;
         $caheInsert->county = $request->lastSegment;
-        // $caheInsert->zip_codes = implode(',', array_map('trim', explode(',', $request->zip_codes)));
-        // $zips = array_filter(array_map('trim', explode(',', $request->zip_codes)));
-        // $caheInsert->zip_codes = json_encode(array_values($zips));
 
-        if ($request->has('zip_codes')) {
-            $zipInput = $request->zip_codes;
+        // Process zip codes
+        $zipInput = $request->zip_codes;
+        $zips = [];
 
-            // Check if input is already JSON
-            if (is_string($zipInput) && is_array(json_decode($zipInput, true))) {
-                $zips = json_decode($zipInput, true);
-            } else {
-                // Process as comma-separated string
-                $zips = array_filter(array_map('trim', explode(',', $zipInput)));
-            }
-
-            // Encode to JSON if we have valid data
-            $caheInsert->zip_codes = !empty($zips) ? json_encode(array_values($zips)) : null;
+        if (is_string($zipInput)) {
+            $decoded = json_decode($zipInput, true);
+            $zips = is_array($decoded)
+                ? $decoded
+                : array_filter(array_map('trim', explode(',', $zipInput)));
         }
+
+        $caheInsert->zip_codes = !empty($zips) ? json_encode(array_values($zips)) : null;
         $caheInsert->cache_file = $request->hide_location;
         $caheInsert->status = $request->status;
         $caheInsert->save();
+
+        // Update main_inventories where county is null for these zips
+        if (!empty($zips) && $request->lastSegment) {
+            DB::table('main_inventories')
+                ->whereIn('zip_code', $zips)
+                ->whereNull('county')
+                ->update(['county' => $request->lastSegment]);
+        }
 
         return response()->json([
             'success' => true,
             'message' => 'Cache command created successfully.',
         ]);
-        // return redirect()->route('cache-commands.index')->with('success', 'Cache command created successfully.');
     }
 
     public function edit($id)
@@ -136,37 +138,47 @@ class CacheCommandController extends Controller
             'zip_codes' => 'required',
             'hide_location' => 'required'
         ]);
-;
-        $caheInsert = CacheCommand::find($id);
+
+        $caheInsert = CacheCommand::findOrFail($id);
         $caheInsert->name = $request->cache_name;
         $caheInsert->command = $request->cache_command;
         $caheInsert->state = $request->cache_state;
         $caheInsert->city = $request->cache_city;
         $caheInsert->county = $request->lastSegment;
-        if ($request->has('zip_codes')) {
-            $zipInput = $request->zip_codes;
 
-            // Check if input is already JSON
-            if (is_string($zipInput) && is_array(json_decode($zipInput, true))) {
-                $zips = json_decode($zipInput, true);
-            } else {
-                // Process as comma-separated string
-                $zips = array_filter(array_map('trim', explode(',', $zipInput)));
-            }
+        // Process zip codes
+        $zipInput = $request->zip_codes;
+        $zips = [];
 
-            // Encode to JSON if we have valid data
-            $caheInsert->zip_codes = !empty($zips) ? json_encode(array_values($zips)) : null;
+        if (is_string($zipInput)) {
+            $decoded = json_decode($zipInput, true);
+            $zips = (json_last_error() === JSON_ERROR_NONE && is_array($decoded))
+                ? $decoded
+                : array_filter(array_map('trim', explode(',', $zipInput)));
         }
+
+        $caheInsert->zip_codes = !empty($zips) ? json_encode(array_values($zips)) : null;
         $caheInsert->cache_file = $request->hide_location;
         $caheInsert->status = $request->status;
         $caheInsert->save();
+
+        // Update main_inventories where county is null for these zips
+        if ($request->lastSegment) {
+            try {
+                DB::table('main_inventories')
+                    ->whereIn('zip_code', $zips)
+                    // ->whereNotNull('county')
+                    ->update(['county' => $request->lastSegment]);
+            } catch (\Exception $e) {
+                Log::error("Failed to update counties: " . $e->getMessage());
+            }
+        }
 
         return response()->json([
             'success' => true,
             'message' => 'Cache command updated successfully.',
         ]);
     }
-
 
     public function status(Request $request)
     {

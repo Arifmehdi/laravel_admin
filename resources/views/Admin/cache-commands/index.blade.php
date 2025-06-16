@@ -238,7 +238,7 @@
                                         class="form-control" style="width: 100%;" placeholder="add-austin-travis-cache"
                                         disabled>
 
-                                    <input type="text" name="cache_command" id="edit_hide_cache_command"
+                                    <input type="hidden" name="cache_command" id="edit_hide_cache_command"
                                         class="form-control" style="width: 100%;" placeholder="add-austin-travis-cache">
                                 </div>
                             </div>
@@ -277,7 +277,7 @@
                                         style="width: 100%;" disabled>
                                     <input type="hidden" name="hide_location" id="edit_hide_location"
                                         class="form-control" style="width: 100%;">
-                                    <input type="text" name="lastSegment" id="edit_lastSegment" class="form-control"
+                                    <input type="hidden" name="lastSegment" id="edit_lastSegment" class="form-control"
                                         style="width: 100%;">
                                 </div>
                             </div>
