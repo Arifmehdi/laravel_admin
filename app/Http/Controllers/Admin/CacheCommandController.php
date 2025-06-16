@@ -214,14 +214,34 @@ class CacheCommandController extends Controller
 
     public function destroy($id)
     {
-        $command = CacheCommand::findOrFail($id);
-        $command->delete();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Cache command deleted successfully.',
+        $response = Http::post($this->frontendUrl . "/api/cache-commands/{$id}/delete-cache", [
+            // Optional: Add any required data here
         ]);
+
+        if ($response->successful()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Cache deleted successfully!',
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to regenerate cache: ' . $response->body(),
+            ], 500);
+        }
     }
+
+
+    // public function destroy($id)
+    // {
+    //     $command = CacheCommand::findOrFail($id);
+    //     $command->delete();
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Cache command deleted successfully.',
+    //     ]);
+    // }
 
     public function runCommand($command)
     {
@@ -291,25 +311,6 @@ class CacheCommandController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Cache regenerated successfully!',
-            ]);
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to regenerate cache: ' . $response->body(),
-            ], 500);
-        }
-    }
-
-    public function deleteCache($id)
-    {
-        $response = Http::post($this->frontendUrl . "/api/cache-commands/{$id}/delete-cache", [
-            // Optional: Add any required data here
-        ]);
-
-        if ($response->successful()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Cache deleted successfully!',
             ]);
         } else {
             return response()->json([

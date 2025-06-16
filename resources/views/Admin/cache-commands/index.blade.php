@@ -615,6 +615,7 @@
                         }
                     },
                     error: function(xhr) {
+                        $('#data-table').DataTable().draw(false);
                         toastr.error('Error: ' + (xhr.responseJSON?.message ||
                             'Failed to delete cache'));
                     },
@@ -687,6 +688,7 @@
                         }
                     },
                     error: function(xhr) {
+                        $('#data-table').DataTable().draw(false);
                         toastr.error('Error: ' + (xhr.responseJSON?.message ||
                             'Command execution failed'));
                     },
