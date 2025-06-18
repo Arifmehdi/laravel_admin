@@ -74,7 +74,7 @@ class CacheCommandController extends Controller
         ->whereNotNull('state')
         ->where('state', '!=', '')
         ->get(['id', 'name', 'city', 'state']);
-        $inventory_dealer_state= $users->pluck('id', 'state');
+        $inventory_dealer_state= $users->pluck('id', 'state')->sortKeys();
         return view('Admin.cache-commands.index', compact('page_title', 'inventory_dealer_state'));
     }
 
