@@ -41,6 +41,23 @@
 
 
                         </div>
+
+                        <!-- Filter Section -->
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-lg-4 col-md-4 col-sm-12">
+                                    <label for="dealerState">Cache State : </label>
+                                    <select class="form-control submitable" id="dealerState">
+                                        <option value="">Choose State</option>
+                                        @foreach ($inventory_dealer_state as $stateData => $index)
+                                            <option value="{{ $stateData }}">{{ $stateData }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
                         <div class="card-body">
                             <table class="table table-bordered table-striped table-hover" id="data-table">
                                 <thead>
@@ -186,12 +203,12 @@
                                 <label>Status</label>
                                 <div class="form-group clearfix">
                                     <div class="icheck-primary d-inline">
-                                        <input type="radio" id="createRadioPrimary1" name="status"
-                                            value="1">
+                                        <input type="radio" id="createRadioPrimary1" name="status" value="1">
                                         <label for="createRadioPrimary1">Active</label>
                                     </div>
                                     <div class="icheck-primary d-inline">
-                                        <input type="radio" id="createRadioPrimary2" name="status" value="0" checked>
+                                        <input type="radio" id="createRadioPrimary2" name="status" value="0"
+                                            checked>
                                         <label for="createRadioPrimary2">Inactive</label>
                                     </div>
                                 </div>
@@ -319,7 +336,15 @@
             var table = $('#data-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('admin.cache-commands.index') }}',
+                searchable: true,
+                "ajax": {
+                    "url": '{{ route('admin.cache-commands.index') }}',
+                    "datatype": "json",
+                    "dataSrc": "data",
+                    "data": function(data) {
+                        data.dealer_state = $('#dealerState').val();
+                    }
+                },
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
@@ -368,6 +393,9 @@
                 ]
             });
 
+            $(document).on('change', '.submitable', function() {
+                table.ajax.reload();
+            });
             // Initialize custom file input
             $('.custom-file-input').on('change', function() {
                 let fileName = $(this).val().split('\\').pop();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\CacheCommand;
+use App\Models\Dealer;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -27,7 +28,9 @@ class CacheCommandController extends Controller
         $page_title = 'Cache Command';
         if ($request->ajax()) {
             $data = CacheCommand::orderBy('id', 'desc');
-
+            if($request->dealer_state != null){
+                $data->where('state',$request->dealer_state);
+            }
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('DT_RowIndex', function ($row) {
@@ -66,7 +69,13 @@ class CacheCommandController extends Controller
                 ->make(true);
         }
 
-        return view('Admin.cache-commands.index', compact('page_title'));
+        $users = Dealer::whereNotNull('city')
+        ->where('city', '!=', '')
+        ->whereNotNull('state')
+        ->where('state', '!=', '')
+        ->get(['id', 'name', 'city', 'state']);
+        $inventory_dealer_state= $users->pluck('id', 'state');
+        return view('Admin.cache-commands.index', compact('page_title', 'inventory_dealer_state'));
     }
 
     public function create()
