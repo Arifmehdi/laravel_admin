@@ -747,7 +747,8 @@
         $(document).on('keyup', '#cache_name', function() {
             var cacheName = $(this).val();
             var command = cacheName.toLowerCase().replace(/\s+/g, '-');
-            let lastSegment = command.split(/[\s-]+/).pop().toLowerCase();
+            // let lastSegment = command.split(/[\s-]+/).pop().toLowerCase();
+            lastSegment = command.replace('-', '_')
             var cus_command = 'add-' + command + '-cache';
 
             $('#cache_command').val(cus_command);
@@ -770,7 +771,8 @@
         $(document).on('keyup', '#edit_cache_name', function() {
             var cacheName = $(this).val();
             var command = cacheName.toLowerCase().replace(/\s+/g, '-');
-            let lastSegment = command.split(/[\s-]+/).pop().toLowerCase();
+            // let lastSegment = command.split(/[\s-]+/).pop().toLowerCase();
+            lastSegment = command.replace('-', '_')
             var cus_command = 'add-' + command + '-cache';
 
             $('#edit_cache_command').val(cus_command);
